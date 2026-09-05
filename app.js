@@ -534,8 +534,9 @@ function openPost(id) {
   bm.onclick = () => { saved.has(id) ? saved.delete(id) : saved.add(id); store.set("sani_saved", [...saved]); bm.textContent = saved.has(id) ? "★ SAVED" : "♡ SAVE LOG"; renderLogs(activeFilter, document.getElementById("searchInput").value); };
   mBody.scrollTop = 0; document.getElementById("mProgress").style.width = "0%";
   modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden";
+  try { history.replaceState(null, "", `?log=${p.id}`); } catch {}
 }
-function closePost() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; currentPost = null; document.title = "SANI.LOG — Infrastructure Intelligence Hub"; }
+function closePost() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; currentPost = null; document.title = "SANI.LOG — Infrastructure Intelligence Hub"; try { history.replaceState(null, "", location.pathname); } catch {} }
 modal.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closePost));
 document.addEventListener("keydown", e => { if (e.key === "Escape") { closePost(); closeAdmin(); palClose(); document.getElementById("themePanel").classList.remove("open"); } });
 mBody.addEventListener("scroll", () => {
@@ -905,11 +906,11 @@ function downloadFile(name, text, type) {
 }
 function buildRSS() {
   const items = published().map(p => `
-    <item><title>${escXml(p.title)}</title><link>${SITE_URL}/#${p.id}</link><guid>${SITE_URL}/#${p.id}</guid><pubDate>${escXml(p.date)}</pubDate><description>${escXml(p.excerpt)}</description><category>${escXml(p.catLabel)}</category></item>`).join("");
+    <item><title>${escXml(p.title)}</title><link>${SITE_URL}/?log=${p.id}</link><guid>${SITE_URL}/?log=${p.id}</guid><pubDate>${escXml(p.date)}</pubDate><description>${escXml(p.excerpt)}</description><category>${escXml(p.catLabel)}</category></item>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>SANI.LOG — Infrastructure Intelligence Hub</title><link>${SITE_URL}</link><description>Field notes on AI infrastructure, inference, MLOps, cloud and platform engineering.</description>${items}</channel></rss>`;
 }
 function buildSitemap() {
-  const urls = [`<url><loc>${SITE_URL}/</loc></url>`, ...published().map(p => `<url><loc>${SITE_URL}/#${p.id}</loc></url>`)];
+  const urls = [`<url><loc>${SITE_URL}/</loc></url>`, ...published().map(p => `<url><loc>${SITE_URL}/?log=${p.id}</loc></url>`)];
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}</urlset>`;
 }
 document.getElementById("rssBtn").addEventListener("click", e => { e.preventDefault(); downloadFile("sani-log-rss.xml", buildRSS(), "application/rss+xml"); });
@@ -924,4 +925,8 @@ document.addEventListener("keydown", e => {
 
 /* init */
 renderThemes(); sbInit(); autoPublish(); renderAll();
+try {
+  const deep = new URLSearchParams(location.search).get("log");
+  if (deep && published().some(p => p.id === deep)) openPost(deep);
+} catch {}
 document.querySelectorAll(".proj-card,.trend-row").forEach(el => { el.classList.add("reveal"); rio.observe(el); });
