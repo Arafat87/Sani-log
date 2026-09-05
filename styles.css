@@ -510,6 +510,33 @@ a{color:inherit}
 .news-row input{flex:1;border:1.5px solid #181C19;background:transparent;font-family:var(--mono);font-size:12px;padding:12px;color:#181C19;outline:none;min-width:0}
 .news-row button{background:#181C19;color:var(--orange);border:none;font-family:var(--mono);font-weight:700;font-size:11px;padding:12px 16px;cursor:pointer;white-space:nowrap}
 .sort-sel{font-family:var(--mono);font-size:11px;font-weight:600;border:1.5px solid var(--ink);background:var(--sage-2);color:var(--ink);border-radius:999px;padding:8px 12px;cursor:pointer}
+
+/* ═════ RESUME BUILDER ═════ */
+.resume-card{width:min(680px,94vw)}
+.resume-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.15);font-family:var(--mono);font-size:12px}
+.resume-head button{background:#EDE6D6;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:800}
+.resume-body{padding:16px;overflow:auto;display:grid;gap:10px}
+.r-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#DBFF3B}
+.resume-body select,.resume-body textarea,.resume-body input{background:#0E100E;border:1px solid rgba(255,255,255,.2);color:#EDE6D6;font-family:var(--mono);font-size:12px;padding:10px;outline:none;width:100%}
+.resume-body textarea{resize:vertical}
+#resExp,#resDuties{display:grid;gap:6px;max-height:180px;overflow:auto}
+.res-check{display:flex;gap:8px;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);padding:8px 10px;font-size:12px;line-height:1.5;cursor:pointer}
+.res-check input{margin-top:3px;accent-color:#DBFF3B}
+.ai-box{border:1.5px dashed rgba(255,255,255,.25);padding:12px;display:grid;gap:8px}
+.ai-box .f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.resume-preview{background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.45;padding:28px;max-height:320px;overflow:auto}
+.resume-preview h1{font-size:20pt;margin:0}
+.resume-preview h2{font-size:12pt;text-transform:uppercase;border-bottom:1px solid #111;margin:14px 0 6px;padding-bottom:2px}
+.resume-preview ul{margin:4px 0 4px 18px}
+.resume-preview li{margin-bottom:3px}
+
+/* ═════ ADMIN-ONLY GATING (hidden from visitors) ═════ */
+#resumeBtn{display:none}
+body.is-admin #resumeBtn{display:inline-block}
+.photo-upload{display:none}
+body.is-admin .photo-upload{display:inline-block}
+.m-tags-edit{display:none}
+body.is-admin .m-tags-edit{display:block}
 .md-preview{border:1.5px solid rgba(255,255,255,.2);background:#0E100E;padding:12px;font-size:13px;line-height:1.6;max-height:260px;overflow:auto}
 .md-preview h3{font-family:var(--disp);margin:10px 0 4px}
 .md-preview pre{background:#000;color:#DBFF3B;font-family:var(--mono);font-size:11px;padding:10px;overflow:auto}

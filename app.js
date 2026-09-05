@@ -83,11 +83,49 @@ const DEFAULT_TRENDS = [
 const DEFAULT_PROFILE = {
   name: "Arafat Sani", role: "AI Infrastructure / Platform Engineer",
   bio: "I build and document production AI infrastructure — inference gateways on Kubernetes, GPU scheduling, MLOps pipelines and internal developer platforms. This log is my lab notebook: every perf win and outage, written up so you can reproduce it.",
-  location: "Remote / Earth", status: "Open to infra roles", avatar: "",
+  location: "Remote / Earth", status: "Open to infra roles", avatar: "", email: "",
+  experience: [
+    { title: "AI Platform Engineer", company: "Contract / Freelance", years: "2024 — Present", bullets: ["Serve LLM workloads on Kubernetes with vLLM, autoscaling cost to near-zero when idle", "Operate GPU scheduling and quotas across teams, holding utilization above 75%", "Ship Backstage golden paths cutting service setup from weeks to a day"] },
+    { title: "DevOps Engineer", company: "Contract / Freelance", years: "2022 — 2024", bullets: ["Migrated manual deploys to ArgoCD GitOps with sealed secrets", "Cut cloud spend 60% with right-sizing and spot-first scheduling", "Owned Prometheus/Grafana alerting with actionable on-call signal"] }
+  ],
   skills: [{ name: "Kubernetes / EKS", pct: 90 }, { name: "Python / Go", pct: 85 }, { name: "Inference (vLLM/CUDA)", pct: 82 }, { name: "Terraform / GitOps", pct: 88 }, { name: "Networking / eBPF", pct: 74 }],
   stack: ["Python", "Go", "Kubernetes", "Terraform", "ArgoCD", "vLLM", "MLflow", "Feast", "Cilium", "Prometheus", "AWS"],
   certs: [{ title: "Certified Kubernetes Administrator", issuer: "CNCF", year: "2025" }, { title: "AWS Solutions Architect – Associate", issuer: "AWS", year: "2024" }, { title: "Machine Learning Engineering", issuer: "Self-driven plus prod", year: "2026" }],
   education: [{ degree: "BSc Computer Science", school: "University", years: "2020 - 2024", note: "Systems, networks, ML. Thesis on GPU scheduling." }, { degree: "MLOps Specialization", school: "Online plus Prod", years: "2025", note: "Pipelines, registries, deployment strategies in production." }]
+};
+
+/* ═════════ RESUME ROLE PRESETS (ATS keyword + duty tailoring) ═════════ */
+const ROLE_PRESETS = {
+  "AI Infrastructure Engineer": { kw: ["GPU clusters", "NCCL", "NVLink", "CUDA", "Slurm", "Kubernetes", "PyTorch", "Distributed training"],
+    summary: "Infrastructure engineer focused on GPU compute at scale — cluster bring-up, fabric debugging, and reliable distributed training in production.",
+    duties: ["Brought up and operated multi-node GPU clusters (NVLink/InfiniBand) serving training and inference", "Debugged NCCL collectives with nccl-tests, improving multi-node scaling efficiency to 1.8x+ on 8 GPUs", "Built GPU quota and scheduling playbooks (MIG, time-slicing) raising fleet utilization above 75%", "Automated node health checks and FABRIC validation, cutting silent hardware failures", "Partnered with ML teams to right-size precision and parallelism strategies per workload", "Maintained runbooks for NCCL timeouts, IB flaps, and CUDA version skew"] },
+  "Cloud Engineer": { kw: ["AWS", "EKS", "Terraform", "Karpenter", "VPC", "IAM", "RDS", "CloudWatch"],
+    summary: "Cloud engineer building cost-efficient, secure AWS platforms with infrastructure as code and scale-to-zero compute.",
+    duties: ["Provisioned VPC, EKS, and RDS estates with Terraform modules across dev/staging/prod", "Cut compute spend 60%+ with Karpenter consolidation and spot-first scheduling", "Hardened IAM with least-privilege roles and SealedSecrets for GitOps delivery", "Built CloudWatch dashboards and alarms for SLOs, latency, and error budgets", "Drove tagging and FinOps chargeback per namespace and team", "Led incident reviews with blameless postmortems and tracked action items"] },
+  "Inference Engineer": { kw: ["vLLM", "TensorRT-LLM", "KV-cache", "Continuous batching", "CUDA", "HPA", "KEDA", "Prometheus"],
+    summary: "Inference engineer squeezing maximum tokens-per-dollar from GPUs — serving stacks, cache tuning, and autoscaling on Kubernetes.",
+    duties: ["Served 7B-class LLMs with vLLM at 4x baseline throughput via continuous batching and PagedAttention", "Tuned KV-cache sizing and prefix caching, cutting tail latency and memory waste", "Built KEDA autoscaling on queue-depth metrics with scale-to-zero for idle cost savings", "Defined TTFT, inter-token latency, and p95-concurrency SLOs with Prometheus alerting", "Ran canary promotions with automatic rollback on latency or quality regression", "Benchmarked quantization trade-offs (FP16/INT8) balancing quality and throughput"] },
+  "MLOps Engineer": { kw: ["MLflow", "Kubeflow", "Feast", "Argo Workflows", "CI/CD", "Model registry", "Canary", "Evidently"],
+    summary: "MLOps engineer shipping models safely — registries, eval-gated promotion, canary delivery, and one-click rollback.",
+    duties: ["Built MLflow model registry with Staging-to-Production promotion gates on holdout metrics", "Orchestrated training and eval pipelines with Argo Workflows and Kubeflow", "Implemented 5% canary releases with auto-rollback on latency or business-metric drift", "Set up feature pipelines with Feast, enforcing point-in-time correctness", "Versioned data, code, and image digests together for full reproducibility", "Monitored production models for drift and wired alerts to on-call"] },
+  "DevOps Engineer": { kw: ["ArgoCD", "GitOps", "GitHub Actions", "Docker", "Helm", "SealedSecrets", "Prometheus", "Grafana"],
+    summary: "DevOps engineer running GitOps delivery — app-of-apps rollouts, sealed secrets, and observable pipelines.",
+    duties: ["Migrated manual kubectl workflows to ArgoCD app-of-apps with automated sync and self-heal", "Built CI pipelines with image scanning, semver promotion, and deployment gates", "Managed secrets with SealedSecrets; eliminated plaintext credentials from git", "Standardized Helm charts and Kustomize overlays across services", "Owned Prometheus/Grafana monitoring with actionable, non-noisy alerting", "Reduced deploy lead time from days to under an hour"] },
+  "Infrastructure Engineer": { kw: ["Terraform", "Linux", "Networking", "PostgreSQL", "Redis", "Bare metal", "Backups", "HA"],
+    summary: "Infrastructure engineer owning the boring-and-reliable layer — IaC, data stores, backups, and high availability.",
+    duties: ["Managed Terraform estates with remote state, locks, and per-environment blast-radius limits", "Operated PostgreSQL and Redis with backups, PITR drills, and failover runbooks", "Hardened Linux fleets with patching cadences and CIS-aligned baselines", "Designed HA topologies across availability zones with tested failover", "Built internal runbooks cutting MTTR on recurring incidents", "Enforced change control with plan-on-PR and manual production approval"] },
+  "Platform Engineer": { kw: ["Backstage", "IDP", "Golden paths", "Scorecards", "Helm", "Scaffolder", "SLOs", "Developer experience"],
+    summary: "Platform engineer multiplying developer output — golden paths, internal developer portals, and paved-road defaults.",
+    duties: ["Built Backstage scaffolder templates shipping production-ready services in minutes", "Defined golden paths for inference, APIs, and workers with baked-in dashboards and alerts", "Launched production-readiness scorecards tracking runbooks, SLOs, and ownership", "Cut time-to-first-deploy from weeks to same-day across adopting teams", "Ran platform office hours and docs, converting ticket ops into self-serve", "Measured platform success on DORA-style throughput and stability metrics"] },
+  "ML Infrastructure Engineer": { kw: ["Feature stores", "Feast", "Spark", "Parquet", "S3", "Training pipelines", "Data versioning", "Great Expectations"],
+    summary: "ML infrastructure engineer connecting data to training — feature platforms, reliable pipelines, and skew-free serving.",
+    duties: ["Built Feast feature store on S3/Parquet offline with Redis online serving", "Eliminated training-serving skew with point-in-time joins and materialization SLOs", "Orchestrated batch pipelines with retries, backfills, and data-quality gates", "Versioned datasets enabling exact experiment reproduction", "Set freshness and completeness SLAs with paging alerts on breach", "Partnered with data scientists to productionize notebook prototypes"] },
+  "Network Engineer": { kw: ["eBPF", "Cilium", "BGP", "VPC", "DNS", "TLS", "Hubble", "Service mesh"],
+    summary: "Network engineer making the invisible visible — eBPF observability, sane topology, and latency hunts with data.",
+    duties: ["Deployed Cilium with Hubble flow observability across Kubernetes clusters", "Diagnosed cross-AZ hairpins and NAT bottlenecks, cutting p99 latency 4x", "Designed per-AZ egress and service affinity policies as reviewable code", "Owned DNS latency budgets and TLS termination posture", "Built dropped-flow and policy-violation alerting to on-call channels", "Documented network topology and runbooks for partition scenarios"] },
+  "Generalist": { kw: ["Kubernetes", "Python", "Terraform", "CI/CD", "Linux", "PostgreSQL", "Monitoring", "GitOps"],
+    summary: "Hands-on engineer across the stack — clusters, pipelines, and production systems, documented in public.",
+    duties: ["Shipped and operated production services end to end, from IaC to on-call", "Automated toil away with scripts, pipelines, and paved-road defaults", "Debugged across layers — app, platform, network — with benchmarks, not guesses", "Wrote runbooks and public field notes so fixes compound across the team", "Balanced delivery speed with reliability budgets and cost awareness", "Mentored through code review and pairing on infrastructure changes"] }
 };
 
 /* ═════════ STORE + STATE ═════════ */
@@ -419,13 +457,14 @@ function renderModalTags() {
     `<span class="m-tag">${t}<button data-mdel="${t}">×</button></span>`).join("");
 }
 document.getElementById("mTagList").addEventListener("click", e => {
-  const b = e.target.closest("[data-mdel]"); if (!b || !currentPost) return;
+  const b = e.target.closest("[data-mdel]"); if (!b || !currentPost || !authed()) return;
   tagOverrides[currentPost.id] = getPostTags(currentPost).filter(t => t !== b.dataset.mdel);
   store.set("sani_post_tags", tagOverrides); persistLocal();
   const p = POSTS.find(x => x.id === currentPost.id); if (p) sbPush("posts", postToRow(p));
   renderModalTags(); paintModalMeta(); renderFilters(); renderLogs(activeFilter, document.getElementById("searchInput").value);
 });
 function addModalTag(raw) {
+  if (!authed()) return;
   const label = String(raw || "").trim().toUpperCase().slice(0, 24); if (!label || !currentPost) return;
   const tags = getPostTags(currentPost); if (tags.includes(label)) return;
   tagOverrides[currentPost.id] = [...tags, label]; store.set("sani_post_tags", tagOverrides);
@@ -538,7 +577,7 @@ function openPost(id) {
 }
 function closePost() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; currentPost = null; document.title = "SANI.LOG — Infrastructure Intelligence Hub"; try { history.replaceState(null, "", location.pathname); } catch {} }
 modal.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closePost));
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closePost(); closeAdmin(); palClose(); document.getElementById("themePanel").classList.remove("open"); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closePost(); closeAdmin(); palClose(); resClose(); document.getElementById("themePanel").classList.remove("open"); } });
 mBody.addEventListener("scroll", () => {
   const max = mBody.scrollHeight - mBody.clientHeight;
   document.getElementById("mProgress").style.width = (max > 0 ? (mBody.scrollTop / max) * 100 : 0) + "%";
@@ -563,7 +602,7 @@ document.getElementById("adminClose").addEventListener("click", closeAdmin);
 overlay.addEventListener("click", closeAdmin);
 document.getElementById("adminUnlock").addEventListener("click", () => {
   if (document.getElementById("adminPw").value === store.get("sani_admin_pw", "admin123")) {
-    sessionStorage.setItem("sani_admin", "1"); openAdmin();
+    sessionStorage.setItem("sani_admin", "1"); paintAdminGated(); openAdmin();
   } else alert("Wrong passcode.");
 });
 function paintAuth() {
@@ -578,11 +617,11 @@ document.getElementById("sbLogin").addEventListener("click", async () => {
   const password = document.getElementById("sbPass").value;
   const { error } = await sb.auth.signInWithPassword({ email, password });
   if (error) alert("Login failed: " + error.message);
-  else { sessionStorage.setItem("sani_admin", "1"); paintAuth(); openAdmin(); }
+  else { sessionStorage.setItem("sani_admin", "1"); paintAuth(); paintAdminGated(); openAdmin(); }
 });
 document.getElementById("sbLogout").addEventListener("click", async () => {
   if (sb) try { await sb.auth.signOut(); } catch {}
-  sessionStorage.removeItem("sani_admin"); paintAuth(); closeAdmin();
+  sessionStorage.removeItem("sani_admin"); paintAuth(); paintAdminGated(); closeAdmin();
 });
 function fillGiscus() {
   const c = gCfg();
@@ -740,17 +779,19 @@ function fillAboutForm() {
   document.getElementById("afBio").value = PROFILE.bio || "";
   document.getElementById("afLoc").value = PROFILE.location || "";
   document.getElementById("afStatus").value = PROFILE.status || "";
+  document.getElementById("afEmail").value = PROFILE.email || "";
   document.getElementById("afAvatar").value = PROFILE.avatar && PROFILE.avatar.startsWith("http") ? PROFILE.avatar : "";
   document.getElementById("afSkills").value = (PROFILE.skills || []).map(s => `${s.name}:${s.pct}`).join("\n");
   document.getElementById("afStack").value = (PROFILE.stack || []).join(", ");
   document.getElementById("afCerts").value = (PROFILE.certs || []).map(c => `${c.title} | ${c.issuer} | ${c.year}`).join("\n");
   document.getElementById("afEdu").value = (PROFILE.education || []).map(x => `${x.degree} | ${x.school} | ${x.years} | ${x.note || ""}`).join("\n");
+  document.getElementById("afExp").value = (PROFILE.experience || []).map(x => `${x.title} | ${x.company} | ${x.years} | ${(x.bullets || []).join(" ; ")}`).join("\n");
 }
 document.getElementById("aboutForm").addEventListener("submit", e => {
   e.preventDefault();
   const v = id => document.getElementById(id).value.trim();
   PROFILE = {
-    ...PROFILE, name: v("afName"), role: v("afRole"), bio: v("afBio"), location: v("afLoc"), status: v("afStatus"),
+    ...PROFILE, name: v("afName"), role: v("afRole"), bio: v("afBio"), location: v("afLoc"), status: v("afStatus"), email: v("afEmail"),
     avatar: v("afAvatar") || PROFILE.avatar,
     skills: v("afSkills").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
       const i = l.lastIndexOf(":");
@@ -762,6 +803,10 @@ document.getElementById("aboutForm").addEventListener("submit", e => {
     }),
     education: v("afEdu").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
       const [degree, school, years, note] = l.split("|").map(s => (s || "").trim()); return { degree, school, years, note };
+    }),
+    experience: v("afExp").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
+      const parts = l.split("|").map(s => (s || "").trim());
+      return { title: parts[0] || "", company: parts[1] || "", years: parts[2] || "", bullets: (parts[3] || "").split(";").map(s => s.trim()).filter(Boolean) };
     })
   };
   persistLocal(); saveWithToast(sbPush("profile", { id: "main", data: PROFILE }));
@@ -860,6 +905,127 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 document.getElementById("toTop").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
+/* ═════════ RESUME BUILDER (ATS export + optional AI polish — ADMIN ONLY) ═════════ */
+let resDraft = { title: "Generalist", summary: "", bullets: [], expOn: [] };
+function paintAdminGated() { document.body.classList.toggle("is-admin", authed()); }
+function resSkills(title) {
+  const base = (ROLE_PRESETS[title] || ROLE_PRESETS.Generalist).kw.slice();
+  const seen = new Set(base.map(s => String(s).toLowerCase()));
+  (PROFILE.stack || []).forEach(s => { if (!seen.has(String(s).toLowerCase())) { seen.add(String(s).toLowerCase()); base.push(s); } });
+  return base.slice(0, 14);
+}
+function resLoadPreset(title, keepCustom = true) {
+  const preset = ROLE_PRESETS[title] || ROLE_PRESETS.Generalist;
+  const customs = keepCustom ? resDraft.bullets.filter(b => b.custom && b.on) : [];
+  resDraft = { title, summary: preset.summary,
+    bullets: [...preset.duties.map(t => ({ t, on: true })), ...customs],
+    expOn: (PROFILE.experience || []).map(() => true) };
+}
+function resCollect() {
+  document.querySelectorAll("#resDuties input").forEach((c, i) => { if (resDraft.bullets[i]) resDraft.bullets[i].on = c.checked; });
+  document.querySelectorAll("#resExp input").forEach((c, i) => { resDraft.expOn[i] = c.checked; });
+  resDraft.summary = document.getElementById("resSummary").value;
+  resDraft.title = document.getElementById("resTitle").value;
+}
+function resRenderLists() {
+  document.getElementById("resExp").innerHTML = (PROFILE.experience || []).map((e, i) =>
+    `<label class="res-check"><input type="checkbox" data-e="${i}" ${resDraft.expOn[i] ? "checked" : ""} /><span><b>${escHtml(e.title)}</b> — ${escHtml(e.company)} · ${escHtml(e.years)}</span></label>`).join("") || `<div style="font-size:12px;opacity:.7">No experience yet — add some in ADMIN → ABOUT.</div>`;
+  document.getElementById("resDuties").innerHTML = resDraft.bullets.map((b, i) =>
+    `<label class="res-check"><input type="checkbox" data-b="${i}" ${b.on ? "checked" : ""} /><span>${escHtml(b.t)}</span></label>`).join("");
+}
+function buildResumeBody() {
+  const p = PROFILE, d = resDraft;
+  const skills = resSkills(d.title).join(", ");
+  const pool = d.bullets.filter(b => b.on).map(b => b.t);
+  const exps = (p.experience || []).map((e, idx) => {
+    if (d.expOn[idx] === false) return "";
+    const extra = idx === 0 ? pool : [];
+    const all = [...(e.bullets || []), ...extra];
+    return `<h2>${escHtml(e.title)} — ${escHtml(e.company)}</h2><p><i>${escHtml(e.years)}</i></p><ul>${all.map(b => `<li>${escHtml(b)}</li>`).join("")}</ul>`;
+  }).join("");
+  return `<h1>${escHtml(p.name || "")}</h1><p>${escHtml(d.title)}${p.email ? " · " + escHtml(p.email) : ""}${p.location ? " · " + escHtml(p.location.replace(/^◉\s*/, "")) : ""}</p>`
+    + `<h2>Summary</h2><p>${escHtml(d.summary)}</p>`
+    + `<h2>Skills</h2><p>${escHtml(skills)}</p>`
+    + `<h2>Experience</h2>${exps}`
+    + `<h2>Education</h2><ul>${(p.education || []).map(x => `<li><b>${escHtml(x.degree)}</b>, ${escHtml(x.school)} (${escHtml(x.years)})</li>`).join("")}</ul>`
+    + `<h2>Certifications</h2><ul>${(p.certs || []).map(c => `<li>${escHtml(c.title)} — ${escHtml(c.issuer)}, ${escHtml(c.year)}</li>`).join("")}</ul>`;
+}
+function buildResumeDoc() {
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Resume — ${escHtml(PROFILE.name || "")} — ${escHtml(resDraft.title)}</title>`
+    + `<style>body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.45;color:#111;max-width:800px;margin:40px auto;padding:0 24px}h1{font-size:20pt;margin:0}h2{font-size:12pt;text-transform:uppercase;border-bottom:1px solid #111;margin:16px 0 6px;padding-bottom:2px}ul{margin:4px 0 4px 18px}li{margin-bottom:3px}p{margin:4px 0}</style></head><body>${buildResumeBody()}</body></html>`;
+}
+function renderResPreview() { resCollect(); document.getElementById("resPreview").innerHTML = buildResumeBody(); }
+function openResume() {
+  if (!authed()) { alert("Admin only — unlock the CMS first."); openAdmin(); return; }
+  const sel = document.getElementById("resTitle");
+  sel.innerHTML = Object.keys(ROLE_PRESETS).map(k => `<option>${k}</option>`).join("");
+  const guess = Object.keys(ROLE_PRESETS).find(k => (PROFILE.role || "").toLowerCase().includes(k.split(" ")[0].toLowerCase()));
+  sel.value = guess || "Generalist";
+  resLoadPreset(sel.value, false);
+  document.getElementById("resSummary").value = resDraft.summary;
+  document.getElementById("aiKey").value = store.get("sani_ai_key", "");
+  resRenderLists(); renderResPreview();
+  document.getElementById("resumeModal").classList.add("open");
+}
+function resClose() { document.getElementById("resumeModal").classList.remove("open"); }
+document.getElementById("resumeBtn").addEventListener("click", openResume);
+document.getElementById("resumeClose").addEventListener("click", resClose);
+document.querySelector('#resumeModal [data-res-close]').addEventListener("click", resClose);
+document.getElementById("resTitle").addEventListener("change", e => {
+  resLoadPreset(e.target.value, true);
+  document.getElementById("resSummary").value = resDraft.summary;
+  resRenderLists(); renderResPreview();
+});
+document.getElementById("resSummary").addEventListener("input", renderResPreview);
+document.getElementById("resDuties").addEventListener("change", renderResPreview);
+document.getElementById("resExp").addEventListener("change", renderResPreview);
+document.getElementById("resAddBullet").addEventListener("click", () => {
+  const v = document.getElementById("resCustom").value.trim(); if (!v) return;
+  resDraft.bullets.push({ t: v, on: true, custom: true });
+  document.getElementById("resCustom").value = "";
+  resRenderLists(); renderResPreview();
+});
+document.getElementById("resDownload").addEventListener("click", () => {
+  renderResPreview();
+  downloadFile(`resume-${slugify(resDraft.title) || "ats"}.html`, buildResumeDoc(), "text/html");
+});
+document.getElementById("resPrint").addEventListener("click", () => {
+  renderResPreview();
+  const w = window.open(URL.createObjectURL(new Blob([buildResumeDoc()], { type: "text/html" })), "_blank");
+  if (w) setTimeout(() => { try { w.print(); } catch {} }, 600);
+  else alert("Popup blocked — use DOWNLOAD then print the file (Ctrl+P → Save as PDF).");
+});
+document.getElementById("aiUse").addEventListener("change", e => {
+  document.getElementById("aiFields").hidden = !e.target.checked;
+});
+document.getElementById("aiPolishBtn").addEventListener("click", async () => {
+  const key = document.getElementById("aiKey").value.trim();
+  const job = document.getElementById("aiJob").value.trim();
+  if (!key) return alert("Paste an API key first — it is stored only in this browser.");
+  if (!job) return alert("Paste the job posting so the AI has something to match against.");
+  store.set("sani_ai_key", key);
+  const btn = document.getElementById("aiPolishBtn"); btn.textContent = "✨ WORKING…";
+  try {
+    resCollect();
+    const base = (document.getElementById("aiBase").value.trim() || "https://api.openai.com/v1").replace(/\/+$/, "");
+    const r = await fetch(base + "/chat/completions", { method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+      body: JSON.stringify({ model: document.getElementById("aiModel").value.trim() || "gpt-4o-mini",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "You rewrite resumes for ATS parsing and recruiter skimming. Reply ONLY valid JSON: {\"summary\": string, \"bullets\": [6-8 strings]}. Bullets start with strong verbs, keep metrics from context, each under 160 chars, plain text, no markdown." },
+          { role: "user", content: "JOB POSTING:\n" + job + "\n\nCURRENT SUMMARY:\n" + resDraft.summary + "\n\nCURRENT BULLETS:\n" + resDraft.bullets.filter(b => b.on).map(b => b.t).join("\n") }
+        ] }) });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const out = JSON.parse((await r.json()).choices[0].message.content);
+    if (out.summary) { resDraft.summary = out.summary; document.getElementById("resSummary").value = out.summary; }
+    if (Array.isArray(out.bullets)) out.bullets.forEach(t => { if (t && !resDraft.bullets.some(b => b.t === t)) resDraft.bullets.push({ t: String(t), on: true, custom: true }); });
+    resRenderLists(); renderResPreview();
+    alert("AI polish applied — review the preview before downloading.");
+  } catch (err) { alert("AI polish failed: " + (err.message || err)); }
+  btn.textContent = "✨ POLISH WITH AI →";
+});
+
 /* ═════════ COMMAND PALETTE (CTRL+K) ═════════ */
 const pal = document.getElementById("palette"), palInput = document.getElementById("palInput"), palList = document.getElementById("palList");
 let palItems = [], palSel = 0;
@@ -924,7 +1090,7 @@ document.addEventListener("keydown", e => {
 });
 
 /* init */
-renderThemes(); sbInit(); autoPublish(); renderAll();
+renderThemes(); sbInit(); autoPublish(); renderAll(); paintAdminGated();
 try {
   const deep = new URLSearchParams(location.search).get("log");
   if (deep && published().some(p => p.id === deep)) openPost(deep);

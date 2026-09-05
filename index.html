@@ -308,6 +308,7 @@
         </div>
         <div class="profile-actions">
           <button class="btn-ink" id="editProfileBtn">EDIT IN ADMIN →</button>
+          <button class="btn-ink" id="resumeBtn">⇩ RESUME / CV</button>
           <label class="photo-upload">⇪ UPLOAD PHOTO<input type="file" id="avatarInput" accept="image/*" hidden /></label>
         </div>
       </div>
@@ -444,6 +445,7 @@
       <form id="aboutForm" class="admin-form">
         <h4>OPERATOR DOSSIER</h4>
         <input id="afName" placeholder="NAME" /><input id="afRole" placeholder="ROLE" />
+        <input id="afEmail" placeholder="EMAIL for resume header" />
         <textarea id="afBio" rows="3" placeholder="BIO"></textarea>
         <div class="f2"><input id="afLoc" placeholder="LOCATION" /><input id="afStatus" placeholder="STATUS" /></div>
         <input id="afAvatar" placeholder="PHOTO URL (or use ⇪ UPLOAD in About)" />
@@ -451,6 +453,7 @@
         <input id="afStack" placeholder="STACK comma-separated — Python, Go, K8s" />
         <textarea id="afCerts" rows="3" placeholder="CERTS — one per line: CKA | CNCF | 2025"></textarea>
         <textarea id="afEdu" rows="3" placeholder="EDUCATION — one per line: BSc CS | Uni | 2020-24 | note"></textarea>
+        <textarea id="afExp" rows="4" placeholder="EXPERIENCE — one per line: Title | Company | Years | win 1 ; win 2"></textarea>
         <button type="submit" class="btn-ink">SAVE DOSSIER →</button>
       </form>
     </div>
@@ -519,6 +522,38 @@ create policy "open" on storage.objects for all using (bucket_id = 'media') with
     </div>
   </div>
 </aside>
+
+<!-- ═════════ RESUME BUILDER (ATS export) ═════════ -->
+<div class="palette" id="resumeModal" aria-hidden="true">
+  <div class="modal-backdrop" data-res-close></div>
+  <div class="pal-card resume-card">
+    <div class="resume-head"><b>▣ RESUME BUILDER — ATS FORMAT</b><button id="resumeClose" aria-label="Close">✕</button></div>
+    <div class="resume-body">
+      <label class="r-label">TARGET JOB TITLE (tailors keywords + duties)</label>
+      <select id="resTitle"></select>
+      <label class="r-label">PROFESSIONAL SUMMARY (editable)</label>
+      <textarea id="resSummary" rows="3"></textarea>
+      <label class="r-label">EXPERIENCE (checked entries are included)</label>
+      <div id="resExp"></div>
+      <label class="r-label">DUTIES / WINS (checked bullets are included)</label>
+      <div id="resDuties"></div>
+      <div class="m-add-row"><input id="resCustom" placeholder="ADD CUSTOM BULLET — e.g. Cut p99 latency 40%" maxlength="160" /><button id="resAddBullet">＋ ADD</button></div>
+      <div class="ai-box">
+        <label class="chk"><input type="checkbox" id="aiUse" /> ✨ AI POLISH (optional — uses your key, stays in your browser)</label>
+        <div id="aiFields" hidden>
+          <div class="f2"><input type="password" id="aiKey" placeholder="OPENAI API KEY sk-..." /><input id="aiModel" placeholder="MODEL gpt-4o-mini" value="gpt-4o-mini" /></div>
+          <input id="aiBase" placeholder="BASE URL https://api.openai.com/v1 (OpenRouter-compatible)" />
+          <textarea id="aiJob" rows="3" placeholder="PASTE JOB POSTING — AI rewrites summary + bullets to match it"></textarea>
+          <button class="btn-ink" id="aiPolishBtn" style="width:100%">✨ POLISH WITH AI →</button>
+        </div>
+      </div>
+      <label class="r-label">ATS PREVIEW (single column, standard headings)</label>
+      <div class="resume-preview" id="resPreview"></div>
+      <div class="f2"><button class="btn-ink" id="resDownload">⇩ DOWNLOAD .HTML</button><button class="btn-ink" id="resPrint">🖨 PRINT / PDF</button></div>
+      <p class="sb-note">ATS rules enforced: single column, no tables/graphics, standard headings, keyword-matched skills, measurable bullets. Replace placeholder experience in ADMIN → ABOUT with your real history.</p>
+    </div>
+  </div>
+</div>
 
 <!-- ═════════ COMMAND PALETTE (CTRL+K) ═════════ -->
 <div class="palette" id="palette" aria-hidden="true">
