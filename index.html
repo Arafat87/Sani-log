@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sage">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SANI.LOG — Infrastructure Intelligence Hub</title>
+<meta name="description" id="metaDesc" content="Personal blog by Arafat Sani — AI Infrastructure, Cloud, Inference, MLOps, DevOps, Platform Engineering." />
+<meta name="theme-color" content="#181C19" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="SANI.LOG — Infrastructure Intelligence Hub" />
+<meta property="og:url" content="https://arafatsani.com/" />
+<link rel="canonical" href="https://arafatsani.com/" />
+<meta property="og:description" content="Field notes on AI infrastructure, inference engineering, MLOps, cloud and platform engineering." />
+<meta name="twitter:card" content="summary" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Blog","name":"SANI.LOG","url":"https://arafatsani.com/","description":"Infrastructure intelligence field notes.","author":{"@type":"Person","name":"Arafat Sani"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter+Tight:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sani_theme')||'sage'}catch(e){}</script>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="sysbar">
+  <div class="sysbar-inner">
+    <span><span class="sys-dot"></span>INFRA KNOWLEDGE SYSTEM — ONLINE</span>
+    <span class="sysbar-theme" id="sysTheme">THEME: D350 SAGE // KAIRO #E54E23</span>
+    <span class="sysbar-right" id="sysClock">SEPTEMBER 2026 // 07:12:00</span>
+  </div>
+  <div class="sysbar-line"></div>
+</div>
+
+<header class="nav" id="top">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="9" cy="9" r="5" stroke="currentColor" stroke-width="2.4"/><circle cx="25" cy="9" r="5" stroke="currentColor" stroke-width="2.4"/><circle cx="9" cy="25" r="5" stroke="currentColor" stroke-width="2.4"/><circle cx="25" cy="25" r="5" stroke="currentColor" stroke-width="2.4"/><circle cx="17" cy="17" r="2.6" fill="currentColor"/></svg>
+      </span>
+      <span class="brand-type">| SANI<span class="brand-hollow">.LOG</span></span>
+      <span class="brand-sub">Infra Intelligence<br>Index</span>
+    </a>
+    <nav class="nav-pills">
+      <a href="#logs" class="pill">LOGS</a>
+      <a href="#projects" class="pill">STACKS</a>
+      <a href="#signals" class="pill">SIGNALS</a>
+      <a href="#about" class="pill hide-m">OPERATOR</a>
+      <div class="theme-wrap">
+        <button class="pill" id="themeBtn" aria-haspopup="true">◐ THEME ▾</button>
+        <div class="theme-panel" id="themePanel" role="menu">
+          <h4>◐ UI THEME — CARGO PALETTE</h4>
+          <p>All palettes sampled from the reference boards. Kairo, Dune, Almond, Sandstone + Sage, Hyperlime, Blue, ARC.</p>
+          <div id="themeOpts"></div>
+        </div>
+      </div>
+      <a href="#contact" class="pill pill-solid">CONTACT ↗</a>
+      <button class="pill" id="adminBtn" title="Open CMS admin">ADMIN ▣</button>
+      <button class="pill" id="palBtn" title="Command palette (Ctrl+K)">⌘K</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">≡</button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#logs">01 / LOGS</a>
+    <a href="#projects">02 / STACKS</a>
+    <a href="#signals">03 / SIGNALS</a>
+    <a href="#about">04 / OPERATOR</a>
+    <a href="#contact">05 / CONTACT</a>
+    <a href="#" id="mobileAdmin">06 / ADMIN ▣</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hex-bg" aria-hidden="true">
+    <svg viewBox="0 0 600 600" width="100%" height="100%"><g fill="none" stroke="currentColor" stroke-opacity=".2" stroke-width="1.5"><path d="M300 40 490 150v220L300 480 110 370V150Z"/><circle cx="300" cy="260" r="70"/><path d="M490 150 620 220M110 370 20 430M300 480v90M300 40V-20"/><path d="M480 460 620 380V200M120 500 20 440"/></g></svg>
+  </div>
+  <div class="hero-inner">
+    <h1 class="mega">Infrastructure<br>Intelligence Hub<br><span class="mega-accent">SANI—N5</span></h1>
+    <p class="hero-sub"><span class="tick">—</span> Field notes from the platform layer. I document what I learn building AI infrastructure, serving models, and running clouds — no cargo, just clusters, GPUs, and pipelines.</p>
+    <div class="role-chips">
+      <span>AI INFRASTRUCTURE</span><span>CLOUD</span><span>INFERENCE</span><span>MLOPS</span><span>DEVOPS</span><span>PLATFORM</span><span>ML INFRA</span><span>NETWORK</span>
+    </div>
+    <div class="stat-labels">
+      <span>◉ FIELD LOGS</span>
+      <span>⊗ INFRA BUILDS SHIPPED</span>
+      <span>⁂ HANDS-ON RATE</span>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-bar"></div>
+        <div class="stat-num" data-count="52" id="statLogs">00</div>
+        <div class="stat-desc">Runbooks & deep-dives on infra + ML systems</div>
+        <div class="stat-foot">LOG.ALL</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-bar"></div>
+        <div class="stat-num" data-count="14" data-suffix="+" id="statProjects">00</div>
+        <div class="stat-desc">Clusters, gateways, pipelines — live & reproducible</div>
+        <div class="stat-foot">STK.DEPLOYED</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-bar orange"></div>
+        <div class="stat-num"><span data-count="96">00</span>%</div>
+        <div class="stat-desc">Tested on real GPUs & real bills. No hype.</div>
+        <div class="stat-foot">LIVE.REC ●</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>INFERENCE — vLLM CONTINUOUS BATCHING ▓▓ </span><span>PLATFORM — GOLDEN PATHS + BACKSTAGE ▓▓ </span><span>MLOPS — MODEL REGISTRY + ROLLBACKS ▓▓ </span><span>NETWORK — eBPF LATENCY HUNT ▓▓ </span><span>CLOUD — KARPENTER SCALE-TO-ZERO ▓▓ </span><span>INFERENCE — vLLM CONTINUOUS BATCHING ▓▓ </span>
+  </div>
+</div>
+
+<section class="featured">
+  <div class="feat-grid">
+    <div class="feat-left">
+      <div class="micro-row"><span>◈ FEATURED RUNBOOK</span><span id="featKicker">LOG-052 / INFERENCE</span></div>
+      <h2 id="featTitle">Serving LLMs at 4x:<br>vLLM, KV-Cache<br>& Autoscaling</h2>
+      <p class="feat-sub" id="featSub">Inference engineering field log — how continuous batching + PagedAttention took a 7B model from 18 → 74 tok/s on one A10G, and how I autoscale it on Kubernetes without burning budget.</p>
+      <div class="feat-meta" id="featMeta">
+        <span class="tag">INFERENCE</span><span class="tag">GPU</span><span class="mono">14 MIN READ — SEP 02 2026</span>
+      </div>
+      <button class="btn-ink" id="featBtn" data-open-post="vllm-inference">READ LOG →</button>
+      <div class="feat-wire" aria-hidden="true"></div>
+    </div>
+    <div class="feat-right">
+      <div class="feat-stat orange-block">
+        <div class="feat-num" id="featNumLogs">052</div>
+        <div class="feat-label">Infra Logs<br>Archived</div>
+        <div class="feat-foot">TRACK 01 / RUNBOOKS <span>⊕</span></div>
+      </div>
+      <div class="feat-stat dark-block">
+        <div class="feat-num" id="featNumStacks">14</div>
+        <div class="feat-label">Stacks<br>Deployed Live</div>
+        <div class="feat-foot">TRACK 02 / BUILDS <span>✕</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section sage" id="logs">
+  <div class="sec-head">
+    <div>
+      <div class="micro">◉ INFRA KNOWLEDGE BASE — 01</div>
+      <h2 class="h-xl">Learning Logs<br>& Field Notes</h2>
+    </div>
+    <div class="sec-side">
+      <p>Filter by engineering track. Add your own tags, delete ones you don't use — the filter bar is yours. Tags persist locally.</p>
+      <div class="search-wrap">
+        <span class="search-ico">⌕</span>
+        <input id="searchInput" type="search" placeholder="SEARCH — try 'inference', 'kubernetes', 'ebpf'..." autocomplete="off" />
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-row" id="filterRow"></div>
+  <div class="tag-manager">
+    <button class="f-pill f-add" id="addTagBtn">＋ ADD TAG</button>
+    <form class="add-tag-form" id="addTagForm">
+      <input id="addTagInput" placeholder="NEW TAG — e.g. GPU" maxlength="24" />
+      <button type="submit">ADD →</button>
+    </form>
+    <span class="tag-hint">Click a pill to filter. Click × on a pill to delete it.</span>
+    <select class="sort-sel" id="sortSel" title="Sort logs"><option value="new">NEWEST</option><option value="old">OLDEST</option><option value="read">MOST READ</option></select>
+    <button class="tag-reset" id="resetTags">↺ reset tags</button>
+  </div>
+
+  <div class="logs-count" id="logsCount"></div>
+  <div class="logs-grid" id="logsGrid"></div>
+
+  <div class="data-strip">
+    <div class="data-cell"><b id="dataLogs">52</b><span>RUNBOOKS<br><i>LOG.ALL</i></span></div>
+    <div class="data-cell"><b id="dataTracks">09</b><span>TRACKS ACTIVE<br><i>TRK.INFRA</i></span></div>
+    <div class="data-cell"><b>140+</b><span>DEPLOYS LOGGED<br><i>RCV.24H</i></span></div>
+    <div class="data-cell orange"><b id="liveClock2">07:12</b><span>NEXT WINDOW<br><i>LIVE.REC</i></span></div>
+  </div>
+</section>
+
+<section class="section dark" id="projects">
+  <div class="dark-grid-bg" aria-hidden="true"></div>
+  <div class="sec-head light">
+    <div>
+      <div class="micro dim">▣ PLATFORM EVIDENCE — 02</div>
+      <h2 class="h-xl lime">Deployed<br>Infrastructure Stacks</h2>
+      <p class="dim-p">Not demos — reproducible stacks. Inference gateways, GPU schedulers, IDPs, GitOps pipelines. Each with Terraform/Helm you can actually run.</p>
+    </div>
+    <div class="proj-totals">
+      <div><b>◉ 09</b><span>CLUSTERS MANAGED</span></div>
+      <div><b>✳ 1,240</b><span>PIPELINE RUNS</span></div>
+      <div class="orange-chip"><span>◉ PLATFORM<br>ENGINEERING DEPT.</span></div>
+    </div>
+  </div>
+
+  <div class="stack-frame">
+    <div class="stack-top">
+      <span>▣ STK — STACKS BUILT FOR PRODUCTION</span>
+      <span>INFRA-09 // REPRODUCIBLE</span>
+    </div>
+    <div class="stack-line"></div>
+    <div class="stack-title-row">
+      <h3 class="stack-big">STACKS <span class="arrow">→</span></h3>
+      <p>Serving, scheduling,<br>observability & delivery.<br>Production-grade infra.</p>
+    </div>
+    <div class="stack-cards" id="projGrid"></div>
+  </div>
+</section>
+
+<section class="section sage" id="signals">
+  <div class="signals-grid">
+    <div class="sig-left">
+      <div class="vertical-label">Infra stack</div>
+      <div class="bar-chart" id="barChart" aria-hidden="true">
+        <div class="bar" style="--h:82%"><i></i><label>GPU</label></div>
+        <div class="bar" style="--h:64%"><i></i><label>K8s</label></div>
+        <div class="bar hot" style="--h:92%"><i></i><label>Infer</label></div>
+        <div class="bar" style="--h:58%"><i></i><label>MLOps</label></div>
+        <div class="bar" style="--h:48%"><i></i><label>Cloud</label></div>
+        <div class="bar" style="--h:52%"><i></i><label>Net</label></div>
+        <div class="bar" style="--h:70%"><i></i><label>Plat</label></div>
+        <div class="bar" style="--h:36%"><i></i><label>Edge</label></div>
+      </div>
+    </div>
+    <div class="sig-right">
+      <div class="micro">◈ I SANI.LOG — 03</div>
+      <h2 class="h-lg">Infrastructure<br>Signal Index</h2>
+      <div class="big-pct"><span data-count="96">0</span><small>%</small> <em>Reproducible<br>Build Rate</em></div>
+      <div class="sig-meta">
+        <div><b>◉ <span id="sigLogs">52+</span></b><span>RUNBOOKS</span></div>
+        <div><b>𝄜 <span id="sigTracks">09</span></b><span>TRACKS COVERED</span></div>
+        <div><b>◍ 68k</b><span>WORDS LOGGED</span></div>
+      </div>
+      <div class="trend-list" id="trendList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section ink" id="roadmap">
+  <div class="micro dim">◉ PLATFORM CONTROL PLANE — SEPTEMBER 2026</div>
+  <div class="road-head">
+    <h2 class="h-xl light">N5 Platform<br><span class="thin">Engineering Expedition</span></h2>
+    <div class="brand-mini">◈ | SANI.LOG</div>
+  </div>
+  <div class="phase-row">
+    <span class="ph1">Phase 1: Foundations & Clusters</span>
+    <span class="ph2">Phase 2: Inference & Autonomy</span>
+  </div>
+  <div class="phase-bar"><i style="width:58%"></i><em></em></div>
+  <div class="timeline">
+    <div class="tl on"><b>◌</b><span>K8s + Terraform Baseline</span><small>DONE — Q1</small></div>
+    <div class="tl on"><b>◉</b><span>GitOps + Observability</span><small>DONE — Q2</small></div>
+    <div class="tl warn"><b>⚠</b><span>Inference Gateway Tuning</span><small>IN PROGRESS — NOW</small></div>
+    <div class="tl on"><b>◉</b><span>GPU Scheduling + Quotas</span><small>IN PROGRESS</small></div>
+    <div class="tl"><b>◎</b><span>Internal Developer Platform</span><small>Q4 TARGET</small></div>
+    <div class="tl wide"><b>⧉</b><span>Base Activation — Teach & Publish</span><small>ALWAYS ON</small></div>
+  </div>
+</section>
+
+<section class="section lime-sec" id="about">
+  <div class="lime-grid">
+    <div class="op-card cream">
+      <div class="micro">ID // OPERATOR FILE</div>
+      <h3>Arafat Sani<br><span class="dim-sm">AI Infra / Platform Engineer</span></h3>
+      <div class="route"><span>FROM<br><b>Tutorials</b></span><span>→</span><span>TO<br><b>Production</b></span></div>
+      <p>Learning in public across 9 tracks: AI infra, cloud, inference, MLOps, DevOps, infra, platform, ML infra, network. Break it, measure it, log it, automate it.</p>
+      <div class="op-big">09</div>
+      <div class="op-foot">STACK: PY / GO / K8S / TF / CUDA / vLLM / eBPF</div>
+    </div>
+    <div class="op-card orange-card">
+      <div class="micro">14/21 Sprints completed ◉</div>
+      <h3>Inference Load<br>Exposure</h3>
+      <p>Currently deep in vLLM, KV-cache tuning, HPA on custom GPU metrics, and Karpenter scale-to-zero. Guardrails: load tests + cost budgets.</p>
+      <div class="tags"><span>FOCUS: INFERENCE</span><span>STATUS: ACTIVE</span></div>
+      <button class="btn-dark" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">SAY HELLO →</button>
+    </div>
+    <div class="op-card cream">
+      <div class="micro">PLATFORM AUTHORITY</div>
+      <div class="meter"><span>PIPELINE HEALTH</span><b>93.5%</b></div>
+      <div class="meter"><span>GPU UTILIZATION</span><b>78.8%</b></div>
+      <div class="meter"><span>DOCS DISCIPLINE</span><b>91.2%</b></div>
+      <ul class="op-list">
+        <li>◉ MLOps & Release Unit</li>
+        <li>◈ Cloud / Network Unit</li>
+      </ul>
+      <div class="continue">CONTINUE →</div>
+    </div>
+  </div>
+
+  <!-- ══════ FULL PROFILE / ABOUT (editable via ADMIN → ABOUT) ══════ -->
+  <div class="profile-wrap" id="profileWrap">
+    <div class="profile-head">
+      <div class="profile-photo">
+        <img id="profileAvatar" alt="Profile photo" src="" hidden />
+        <div class="avatar-fallback" id="avatarFallback">AS</div>
+        <span class="photo-tag">IMG // OPERATOR</span>
+      </div>
+      <div class="profile-id">
+        <div class="micro">◉ FULL OPERATOR DOSSIER — EDITABLE IN ADMIN</div>
+        <h2 id="profileName">Arafat Sani</h2>
+        <div class="profile-role" id="profileRole">AI Infrastructure / Platform Engineer</div>
+        <p id="profileBio">I build and document production AI infrastructure...</p>
+        <div class="profile-meta">
+          <span id="profileLocation">◉ Remote / Earth</span>
+          <span id="profileStatus">● Open to infra roles</span>
+        </div>
+        <div class="profile-actions">
+          <button class="btn-ink" id="editProfileBtn">EDIT IN ADMIN →</button>
+          <label class="photo-upload">⇪ UPLOAD PHOTO<input type="file" id="avatarInput" accept="image/*" hidden /></label>
+        </div>
+      </div>
+    </div>
+    <div class="profile-grid">
+      <div class="pf-card">
+        <div class="micro">▣ SKILLS // PROFICIENCY</div>
+        <div id="skillsList"></div>
+      </div>
+      <div class="pf-card">
+        <div class="micro">▣ TECH STACK</div>
+        <div class="stack-chips" id="stackChips"></div>
+        <div class="micro" style="margin-top:18px">▣ CERTIFICATIONS</div>
+        <div id="certsList"></div>
+      </div>
+      <div class="pf-card">
+        <div class="micro">▣ EDUCATION</div>
+        <div id="eduList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div class="c-left">
+      <div class="micro">INFRA COLLABORATION</div>
+      <h2>Builds &<br>Case Studies</h2>
+      <div class="c-line"></div>
+      <p class="c-note">◈ Every message is routed with context. Hiring for AI infra / platform / MLOps, or want a runbook review? I reply within 48 hours.</p>
+      <div class="c-links">
+        <a href="https://github.com" target="_blank" rel="noopener">GITHUB ↗</a>
+        <a href="https://x.com" target="_blank" rel="noopener">X / TWITTER ↗</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LINKEDIN ↗</a>
+        <a href="mailto:hello@sani.log">EMAIL ↗</a>
+      </div>
+      <form class="news-form" id="newsForm">
+        <div class="micro">◇ SIGNAL FEED — NEW LOGS BY EMAIL</div>
+        <div class="news-row"><input type="email" id="newsEmail" placeholder="you@domain.com" required /><button type="submit">SUBSCRIBE →</button></div>
+        <p class="form-ok" id="newsOk" hidden>✓ SUBSCRIBED. First transmission inbound.</p>
+      </form>
+    </div>
+    <div class="c-right">
+      <div class="micro light">AVAILABILITY: OPEN — 04</div>
+      <h2>Start a Build<br>With Me</h2>
+      <div class="c-line light"></div>
+      <a class="start-big" href="mailto:hello@sani.log">Start a Project <span>→</span></a>
+      <form class="mini-form" id="contactForm">
+        <input type="text" id="cfName" placeholder="NAME / TEAM" required />
+        <input type="email" id="cfEmail" placeholder="EMAIL" required />
+        <textarea id="cfMsg" rows="3" placeholder="BRIEF — e.g. Need vLLM gateway on EKS with autoscaling..." required></textarea>
+        <button type="submit">CONTACT →</button>
+        <p class="form-ok" id="formOk" hidden>✓ RECEIVED. Routing to build queue...</p>
+      </form>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="foot-giant" aria-hidden="true">09</div>
+    <div class="foot-brand">◈ | SANI.LOG <small>Infra Intelligence Index — 9 tracks</small></div>
+    <div class="foot-base">© 2026 ARAFAT SANI — AI INFRA / CLOUD / MLOPS / PLATFORM. <span><a href="#top">BACK TO TOP ↑</a> · <a href="#" id="rssBtn">RSS ↓</a> · <a href="#" id="sitemapBtn">SITEMAP ↓</a></span></div>
+  </footer>
+</section>
+</main>
+
+<div class="scroll-progress"><i id="scrollProgress"></i></div>
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<!-- ═════════ ADMIN CMS DRAWER (CRUD + Supabase) ═════════ -->
+<div class="admin-overlay" id="adminOverlay" hidden></div>
+<aside class="admin-drawer" id="adminDrawer" aria-hidden="true">
+  <div class="admin-head">
+    <div><b>▣ CMS ADMIN</b><span id="sbStatus">● LOCAL MODE</span></div>
+    <button id="adminClose" aria-label="Close admin">✕</button>
+  </div>
+  <div class="sync-toast" id="syncToast" hidden></div>
+  <div class="admin-lock" id="adminLock">
+    <p>Enter admin passcode (default <code>admin123</code> — change it in Settings).</p>
+    <div class="m-add-row"><input type="password" id="adminPw" placeholder="PASSCODE" /><button id="adminUnlock">UNLOCK →</button></div>
+    <div class="m-add-row" id="sbAuthRow" hidden><input type="email" id="sbEmail" placeholder="SUPABASE EMAIL" /><input type="password" id="sbPass" placeholder="PASSWORD" /><button id="sbLogin">LOGIN</button><button id="sbLogout" hidden>OUT</button></div>
+  </div>
+  <div id="adminBody" hidden>
+    <div class="admin-tabs">
+      <button class="active" data-tab="posts">LOGS</button>
+      <button data-tab="projects">STACKS</button>
+      <button data-tab="trends">SIGNALS</button>
+      <button data-tab="about">ABOUT</button>
+      <button data-tab="settings">SYNC</button>
+    </div>
+    <div class="admin-pane" data-pane="posts">
+      <button class="btn-ink" id="newPostBtn">＋ NEW LOG</button>
+      <div id="adminPostList"></div>
+      <form id="postForm" class="admin-form" hidden>
+        <h4 id="postFormTitle">NEW LOG</h4>
+        <input id="pfTitle" placeholder="TITLE *" required />
+        <div class="f2"><select id="pfCat"></select><input id="pfRead" placeholder="READ — blank = AUTO" /></div>
+        <input id="pfExcerpt" placeholder="EXCERPT / SUBTITLE *" />
+        <div class="f2"><input id="pfLevel" placeholder="LVL e.g. LVL-03" /><label class="chk"><input type="checkbox" id="pfHot" /> FEATURED</label></div>
+        <div class="f2"><select id="pfStatus"><option value="published">PUBLISHED</option><option value="draft">DRAFT</option><option value="scheduled">SCHEDULED</option></select><input id="pfCover" placeholder="COVER IMAGE URL (optional)" /></div>
+        <div class="f2"><input id="pfSeries" placeholder="SERIES e.g. inference-path" /><input id="pfPublishAt" type="datetime-local" title="Schedule: publish at this time" /></div>
+        <div class="f2"><label class="chk">⇪ COVER FILE<input type="file" id="pfCoverFile" accept="image/*" hidden /></label><label class="chk"><input type="checkbox" id="pfMd" checked /> MARKDOWN MODE</label></div>
+        <input id="pfTags" placeholder="TAGS comma-separated — INFERENCE, vLLM, GPU" />
+        <textarea id="pfBody" rows="8" placeholder="BODY — Markdown (## heading, **bold**, ```code) or HTML"></textarea>
+        <button type="button" id="pfPreviewBtn">👁 PREVIEW →</button>
+        <div class="md-preview" id="pfPreview" hidden></div>
+        <div class="f2"><button type="submit" class="btn-ink">SAVE →</button><button type="button" id="postFormCancel">CANCEL</button></div>
+      </form>
+    </div>
+    <div class="admin-pane" data-pane="projects" hidden>
+      <button class="btn-ink" id="newProjBtn">＋ NEW STACK</button>
+      <div id="adminProjList"></div>
+      <form id="projForm" class="admin-form" hidden>
+        <h4>STACK ITEM</h4>
+        <input id="jfName" placeholder="NAME * e.g. Infer Gateway" />
+        <input id="jfSub" placeholder="SUBTITLE HTML e.g. Autoscaled<br>Inference" />
+        <input id="jfTag" placeholder="KICKER e.g. 01 / SERVING" />
+        <input id="jfDesc" placeholder="DESCRIPTION *" />
+        <input id="jfStack" placeholder="STACK comma-separated — vLLM, K8S" />
+        <div class="f2"><input id="jfNum" placeholder="BIG NO e.g. 08" /><label class="chk"><input type="checkbox" id="jfAccent" /> HIGHLIGHT</label></div>
+        <div class="f2"><button type="submit" class="btn-ink">SAVE →</button><button type="button" id="projFormCancel">CANCEL</button></div>
+      </form>
+    </div>
+    <div class="admin-pane" data-pane="trends" hidden>
+      <button class="btn-ink" id="newTrendBtn">＋ NEW SIGNAL</button>
+      <div id="adminTrendList"></div>
+      <form id="trendForm" class="admin-form" hidden>
+        <h4>SIGNAL</h4>
+        <input id="tfTitle" placeholder="TITLE *" />
+        <textarea id="tfDesc" rows="3" placeholder="DETAIL *"></textarea>
+        <input id="tfPct" placeholder="PCT e.g. 72.4%" />
+        <div class="f2"><button type="submit" class="btn-ink">SAVE →</button><button type="button" id="trendFormCancel">CANCEL</button></div>
+      </form>
+    </div>
+    <div class="admin-pane" data-pane="about" hidden>
+      <form id="aboutForm" class="admin-form">
+        <h4>OPERATOR DOSSIER</h4>
+        <input id="afName" placeholder="NAME" /><input id="afRole" placeholder="ROLE" />
+        <textarea id="afBio" rows="3" placeholder="BIO"></textarea>
+        <div class="f2"><input id="afLoc" placeholder="LOCATION" /><input id="afStatus" placeholder="STATUS" /></div>
+        <input id="afAvatar" placeholder="PHOTO URL (or use ⇪ UPLOAD in About)" />
+        <textarea id="afSkills" rows="3" placeholder="SKILLS — one per line: Kubernetes:90"></textarea>
+        <input id="afStack" placeholder="STACK comma-separated — Python, Go, K8s" />
+        <textarea id="afCerts" rows="3" placeholder="CERTS — one per line: CKA | CNCF | 2025"></textarea>
+        <textarea id="afEdu" rows="3" placeholder="EDUCATION — one per line: BSc CS | Uni | 2020-24 | note"></textarea>
+        <button type="submit" class="btn-ink">SAVE DOSSIER →</button>
+      </form>
+    </div>
+    <div class="admin-pane" data-pane="settings" hidden>
+      <form id="sbForm" class="admin-form">
+        <h4>SUPABASE SYNC (Postgres backend)</h4>
+        <input id="sbUrl" placeholder="SUPABASE_URL https://xyz.supabase.co" />
+        <input id="sbKey" placeholder="SUPABASE_ANON_KEY" />
+        <div class="f2"><button type="submit" class="btn-ink">CONNECT →</button><button type="button" id="sbDisconnect">DISCONNECT</button></div>
+        <p class="sb-note">Run this SQL once in Supabase → SQL Editor. Then every CRUD in this panel writes to Postgres <i>and</i> local cache.</p>
+        <pre class="sb-sql">create table if not exists posts (id text primary key, num text, cat text, cat_label text, title text, excerpt text, read text, date text, level text, hot boolean, tags text[], body text, status text default 'published', cover text default '', series text default '', publish_at text default '', format text default 'html', raw text default '');
+create table if not exists projects (id text primary key, n text, tag text, name text, sub text, "desc" text, stack text[], accent boolean);
+create table if not exists trends (id text primary key, n text, t text, d text, pct text);
+create table if not exists profile (id text primary key, data jsonb);
+create table if not exists reactions (post_id text primary key, likes integer default 0, views integer default 0);
+create table if not exists subscribers (email text primary key, created_at timestamptz default now());
+alter table posts add column if not exists status text default 'published';
+alter table posts add column if not exists cover text default '';
+alter table posts add column if not exists series text default '';
+alter table posts add column if not exists publish_at text default '';
+alter table posts add column if not exists format text default 'html';
+alter table posts add column if not exists raw text default '';
+alter table posts enable row level security;
+alter table projects enable row level security;
+alter table trends enable row level security;
+alter table profile enable row level security;
+alter table reactions enable row level security;
+alter table subscribers enable row level security;
+grant all on posts to anon, authenticated;
+grant all on projects to anon, authenticated;
+grant all on trends to anon, authenticated;
+grant all on profile to anon, authenticated;
+grant all on reactions to anon, authenticated;
+grant all on subscribers to anon, authenticated;
+drop policy if exists "open" on posts;
+drop policy if exists "open" on projects;
+drop policy if exists "open" on trends;
+drop policy if exists "open" on profile;
+drop policy if exists "open" on reactions;
+drop policy if exists "open" on subscribers;
+create policy "open" on posts for all using (true) with check (true);
+create policy "open" on projects for all using (true) with check (true);
+create policy "open" on trends for all using (true) with check (true);
+create policy "open" on profile for all using (true) with check (true);
+create policy "open" on reactions for all using (true) with check (true);
+create policy "open" on subscribers for all using (true) with check (true);
+insert into storage.buckets (id, name, public) values ('media', 'media', true) on conflict (id) do nothing;
+drop policy if exists "open" on storage.objects;
+create policy "open" on storage.objects for all using (bucket_id = 'media') with check (bucket_id = 'media');</pre>
+      </form>
+      <form id="giscusForm" class="admin-form">
+        <h4>COMMENTS (GISCUS via GitHub Discussions)</h4>
+        <label class="chk"><input type="checkbox" id="gComments" /> ENABLE COMMENTS</label>
+        <input id="gRepo" placeholder="REPO e.g. octocat/blog" />
+        <div class="f2"><input id="gRepoId" placeholder="REPO ID R_xxx" /><input id="gCat" placeholder="CATEGORY e.g. General" /></div>
+        <input id="gCatId" placeholder="CATEGORY ID DIC_xxx" />
+        <button type="submit" class="btn-ink">SAVE →</button>
+        <p class="sb-note">Enable Discussions on the repo, then copy IDs from giscus.app configuration.</p>
+      </form>
+      <div class="admin-form">
+        <h4>BACKUP / ADMIN</h4>
+        <div class="f2"><button class="btn-ink" id="exportBtn">⇩ EXPORT JSON</button><label class="btn-ink" style="text-align:center;cursor:pointer">⇪ IMPORT<input type="file" id="importInput" accept=".json" hidden /></label></div>
+        <div class="f2"><input type="password" id="pwNew" placeholder="NEW PASSCODE" /><button id="pwSave">SET →</button></div>
+        <button id="resetAllBtn" style="background:none;border:1px solid currentColor;padding:10px;cursor:pointer;font-family:var(--mono)">↺ RESET ALL TO DEFAULTS</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═════════ COMMAND PALETTE (CTRL+K) ═════════ -->
+<div class="palette" id="palette" aria-hidden="true">
+  <div class="modal-backdrop" data-pal-close></div>
+  <div class="pal-card">
+    <input id="palInput" placeholder="TYPE — logs, sections, themes, actions..." autocomplete="off" />
+    <div id="palList"></div>
+    <div class="pal-foot">↵ OPEN · ↑↓ NAVIGATE · ESC CLOSE</div>
+  </div>
+</div>
+
+<div class="modal" id="readerModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <article class="modal-card">
+    <div class="modal-top"><span id="mKicker">LOG-052</span><button data-close aria-label="Close">✕</button></div>
+    <div class="modal-progress"><i id="mProgress"></i></div>
+    <div class="modal-body" id="mBody">
+      <h2 id="mTitle"></h2>
+      <div class="modal-meta" id="mMeta"></div>
+      <div class="m-cover" id="mCoverWrap" hidden><img id="mCover" alt="Cover image" /></div>
+      <div class="m-toc" id="mTocWrap" hidden><h5>◇ IN THIS LOG</h5><div id="mToc"></div></div>
+      <div class="modal-content" id="mContent"></div>
+      <div class="m-series" id="mSeriesWrap" hidden><h5>◇ SERIES PATH</h5><div class="series-nav" id="mSeries"></div></div>
+      <div class="m-tags-edit">
+        <h5>◇ TAGS — ADD / DELETE (SAVED LOCALLY, USABLE AS FILTERS)</h5>
+        <div class="m-tag-list" id="mTagList"></div>
+        <div class="m-add-row">
+          <input id="mTagInput" placeholder="ADD TAG — e.g. CUDA" maxlength="24" />
+          <button id="mTagAdd">＋ ADD</button>
+        </div>
+      </div>
+      <div class="m-related">
+        <h5>◇ UP NEXT — RELATED LOGS</h5>
+        <div id="mRelated"></div>
+      </div>
+      <div class="modal-foot">
+        <span id="mViews">◉ 0 READS</span>
+        <span><button class="btn-ink" id="mLike">♡ LIKE (0)</button> <button class="btn-ink" id="mBookmark">♡ SAVE LOG</button></span>
+      </div>
+      <div class="m-comments" id="mCommentsWrap" hidden><h5>◇ DISCUSSION</h5><div id="mComments"></div></div>
+    </div>
+  </article>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
