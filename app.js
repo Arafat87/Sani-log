@@ -83,7 +83,7 @@ const DEFAULT_TRENDS = [
 const DEFAULT_PROFILE = {
   name: "Arafat Sani", role: "AI Infrastructure / Platform Engineer",
   bio: "I build and document production AI infrastructure — inference gateways on Kubernetes, GPU scheduling, MLOps pipelines and internal developer platforms. This log is my lab notebook: every perf win and outage, written up so you can reproduce it.",
-  location: "Remote / Earth", status: "Open to infra roles", avatar: "", email: "",
+  location: "Remote / Earth", status: "Open to infra roles", avatar: "", email: "yasirarafat9287@gmail.com",
   experience: [
     { title: "AI Platform Engineer", company: "Contract / Freelance", years: "2024 — Present", bullets: ["Serve LLM workloads on Kubernetes with vLLM, autoscaling cost to near-zero when idle", "Operate GPU scheduling and quotas across teams, holding utilization above 75%", "Ship Backstage golden paths cutting service setup from weeks to a day"] },
     { title: "DevOps Engineer", company: "Contract / Freelance", years: "2022 — 2024", bullets: ["Migrated manual deploys to ArgoCD GitOps with sealed secrets", "Cut cloud spend 60% with right-sizing and spot-first scheduling", "Owned Prometheus/Grafana alerting with actionable on-call signal"] }
@@ -150,6 +150,7 @@ POSTS.forEach(p => { if (!p.status) p.status = "published"; if (p.cover === unde
 let views = store.get("sani_views", {});
 let likes = new Set(store.get("sani_likes", []));
 let sortMode = "new";
+if (PROFILE.email === undefined) PROFILE.email = "yasirarafat9287@gmail.com";
 const persistLocal = () => {
   store.set("sani_posts", POSTS); store.set("sani_projects", PROJECTS);
   store.set("sani_trends", TRENDS); store.set("sani_profile", PROFILE);
