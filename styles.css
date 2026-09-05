@@ -339,8 +339,8 @@ a{color:inherit}
 
 /* FOOTER */
 .footer{background:rgba(0,0,0,.35);border-top:1px solid var(--line);padding:0 0 28px;overflow:hidden}
-.foot-giant{font-family:var(--disp);font-weight:900;font-size:32vw;line-height:.75;letter-spacing:-.06em;opacity:.9;margin-left:-1vw;user-select:none}
-.foot-brand{max-width:1280px;margin:-40px auto 0;padding:0 24px;font-family:var(--disp);font-weight:800;font-size:28px;display:flex;gap:12px;align-items:center}
+.foot-giant{font-family:var(--disp);font-weight:900;font-size:32vw;line-height:.75;letter-spacing:-.06em;opacity:.9;margin-left:-1vw;margin-bottom:16px;user-select:none}
+.foot-brand{max-width:1280px;margin:0 auto;padding:24px 24px 0;font-family:var(--disp);font-weight:800;font-size:28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .foot-brand small{font-family:var(--body);font-weight:500;font-size:14px;opacity:.7}
 .foot-base{max-width:1280px;margin:18px auto 0;padding:18px 24px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .foot-base a{color:var(--orange)}
