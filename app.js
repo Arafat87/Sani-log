@@ -1,11 +1,11 @@
 /* ═════════ THEMES — full cargo palette ═════════ */
 const THEMES = [
-  { id: "sage",      name: "D350 Sage",      hex: "KAIRO #E54E23", sw: ["#C5D1B5", "#181C19", "#E54E23", "#DBFF3B"] },
-  { id: "hyperlime", name: "TRA Hyperlime",  hex: "LIME #D9FF3D",  sw: ["#D9FF3D", "#141711", "#E54E23", "#FFFFFF"] },
-  { id: "dune",      name: "NCX Dune",       hex: "DUNE #403D38",  sw: ["#403D38", "#EDE6D6", "#E54E23", "#736A65"] },
-  { id: "almond",    name: "Almond Day",     hex: "ALMOND #CDC5BA",sw: ["#CDC5BA", "#2B2724", "#E54E23", "#736A65"] },
-  { id: "aerospace", name: "Aerospace Blue", hex: "BLUE #1F27FF",  sw: ["#1F27FF", "#F0F1FF", "#FF5A26", "#DBFF3B"] },
-  { id: "arc",       name: "ARC Signal",     hex: "ARC #FFD21F",   sw: ["#FFD21F", "#161513", "#E54E23", "#FFFFFF"] }
+  { id: "sage",      name: "D350 Sage",      hex: "KAIRO #E54E23", sw: ["#C5D1B5", "#181C19", "#E54E23"] },
+  { id: "hyperlime", name: "TRA Hyperlime",  hex: "LIME #D9FF3D",  sw: ["#D9FF3D", "#141711", "#E54E23"] },
+  { id: "dune",      name: "NCX Dune",       hex: "DUNE #403D38",  sw: ["#403D38", "#EDE6D6", "#E54E23"] },
+  { id: "almond",    name: "Almond Day",     hex: "ALMOND #CDC5BA",sw: ["#CDC5BA", "#2B2724", "#E54E23"] },
+  { id: "aerospace", name: "Aerospace Blue", hex: "BLUE #1F27FF",  sw: ["#1F27FF", "#F0F1FF", "#FF5A26"] },
+  { id: "arc",       name: "ARC Signal",     hex: "ARC #FFD21F",   sw: ["#FFD21F", "#161513", "#E54E23"] }
 ];
 const BASE_TAGS = [
   { id: "ai-infra",  label: "AI INFRA" }, { id: "cloud", label: "CLOUD" },
@@ -277,7 +277,7 @@ const fileToURL = f => new Promise(res => { const r = new FileReader(); r.onload
 
 /* ═════════ THEMES ═════════ */
 function renderThemes() {
-  const cur = document.documentElement.dataset.theme || "sage";
+  const cur = document.documentElement.dataset.theme || "aerospace";
   document.getElementById("themeOpts").innerHTML = THEMES.map(t => `
     <button class="theme-opt ${t.id === cur ? "active" : ""}" data-theme-id="${t.id}">
       <span class="swatches">${t.sw.map(c => `<i style="background:${c}"></i>`).join("")}</span>
