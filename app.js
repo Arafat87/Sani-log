@@ -383,7 +383,7 @@ document.getElementById("searchInput").addEventListener("input", e => renderLogs
 /* ═════════ PROJECTS + TRENDS + PROFILE ═════════ */
 function renderProjects() {
   document.getElementById("projGrid").innerHTML = PROJECTS.map(p => `
-    <div class="proj-card ${p.accent ? "feat-proj" : ""} reveal in">
+    <div class="proj-card ${p.accent ? "feat-proj" : ""} reveal in" data-pid="${p.id}" tabindex="0">
       <div class="proj-head"><span>${p.name}</span><span>${p.tag}</span></div>
       <div class="proj-bignum">${p.n}</div><div class="proj-name">${p.sub}</div>
       <p class="proj-desc">${p.desc}</p>
@@ -391,6 +391,22 @@ function renderProjects() {
       <div class="proj-foot"><a href="#">● LIVE →</a><a href="#">SPECS →</a></div>
     </div>`).join("");
 }
+/* Active stack follows hover/focus — one highlighted card at a time, default restores on leave */
+function paintActiveProj(id) {
+  document.querySelectorAll("#projGrid .proj-card").forEach(c => c.classList.toggle("feat-proj", c.dataset.pid === id));
+}
+const defaultProjId = () => { const d = PROJECTS.find(p => p.accent) || PROJECTS[0]; return d && d.id; };
+document.getElementById("projGrid").addEventListener("mouseover", e => {
+  const c = e.target.closest(".proj-card"); if (c) paintActiveProj(c.dataset.pid);
+});
+document.getElementById("projGrid").addEventListener("mouseleave", () => paintActiveProj(defaultProjId()));
+document.getElementById("projGrid").addEventListener("focusin", e => {
+  const c = e.target.closest(".proj-card"); if (c) paintActiveProj(c.dataset.pid);
+});
+document.getElementById("projGrid").addEventListener("focusout", () => paintActiveProj(defaultProjId()));
+document.getElementById("projGrid").addEventListener("click", e => {
+  const c = e.target.closest(".proj-card"); if (c) paintActiveProj(c.dataset.pid);
+});
 function renderTrends() {
   const tl = document.getElementById("trendList");
   tl.innerHTML = TRENDS.map((t, i) => `
