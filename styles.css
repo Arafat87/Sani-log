@@ -256,7 +256,7 @@ a{color:inherit}
 .bar label{font-family:var(--mono);font-size:9px;writing-mode:vertical-rl}
 .big-pct{font-family:var(--disp);font-weight:900;font-size:92px;letter-spacing:-.05em;line-height:1;margin:10px 0;border-bottom:2px solid var(--ink);padding-bottom:16px}
 .big-pct small{font-size:38px}
-.big-pct em{font-style:normal;font-size:13px;font-family:var(--body);font-weight:600;line-height:1.7;display:inline-block;vertical-align:top;padding-top:20px;margin-left:12px}
+.big-pct em{font-style:normal;font-size:13px;font-family:var(--body);font-weight:600;line-height:1.6;display:inline-block;vertical-align:middle;margin-left:14px;max-width:150px;text-align:left}
 .sig-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
 .sig-meta b{font-family:var(--disp);font-size:26px;display:block}
 .sig-meta span{font-family:var(--mono);font-size:10px}
