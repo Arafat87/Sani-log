@@ -1106,8 +1106,47 @@ document.addEventListener("keydown", e => {
   }
 });
 
+/* ═════════ FUN MOTION: scramble-in, scrollspy, hiding nav, growing bars ═════════ */
+function scrambleIn(root) {
+  if (!root || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const glyphs = "▓▒░<>/\\|01○◉⁂+#";
+  const nodes = [];
+  const walk = n => n.childNodes.forEach(c => { if (c.nodeType === 3) { if (c.textContent.trim()) nodes.push(c); } else walk(c); });
+  try { walk(root); } catch { return; }
+  nodes.forEach((node, ni) => {
+    const full = node.textContent;
+    let frame = 0;
+    const total = 12 + ni * 5;
+    const iv = setInterval(() => {
+      frame++;
+      const done = Math.floor((frame / total) * full.length);
+      node.textContent = [...full].map((ch, i) => (i < done || ch.trim() === "") ? ch : glyphs[Math.random() * glyphs.length | 0]).join("");
+      if (done >= full.length) { clearInterval(iv); node.textContent = full; }
+    }, 30);
+  });
+}
+const spyLinks = [...document.querySelectorAll(".nav-pills a.pill[href^='#']")];
+if ("IntersectionObserver" in window) {
+  const spy = new IntersectionObserver(es => es.forEach(en => {
+    if (!en.isIntersecting) return;
+    spyLinks.forEach(a => a.classList.toggle("spy", a.getAttribute("href") === "#" + en.target.id));
+  }), { rootMargin: "-35% 0px -55% 0px" });
+  ["logs", "projects", "signals", "about", "contact"].forEach(id => { const s = document.getElementById(id); if (s) spy.observe(s); });
+  const bio = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add("grow"); bio.unobserve(en.target); }
+  }), { threshold: 0.25 });
+  document.querySelectorAll(".bar i").forEach(b => bio.observe(b));
+}
+let lastScrollY = 0;
+addEventListener("scroll", () => {
+  const y = scrollY, nav = document.querySelector(".nav");
+  if (nav) nav.classList.toggle("nav-hide", y > 160 && y > lastScrollY);
+  lastScrollY = y;
+}, { passive: true });
+
 /* init */
 renderThemes(); sbInit(); autoPublish(); renderAll(); paintAdminGated();
+scrambleIn(document.querySelector(".mega"));
 try {
   const deep = new URLSearchParams(location.search).get("log");
   if (deep && published().some(p => p.id === deep)) openPost(deep);
