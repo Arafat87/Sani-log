@@ -595,12 +595,38 @@ body.is-admin .m-tags-edit{display:block}
 @media(max-width:640px){
   .logs-grid,.stack-cards{grid-template-columns:1fr}
   .stat-grid,.data-strip{grid-template-columns:1fr}
+  .nav-inner{padding:12px 14px;gap:10px}
+  .brand-type{font-size:20px}
+  .nav-pills{gap:6px}
   .nav-pills .pill{display:none}
-  .nav-pills .pill-solid,.theme-wrap{display:block}
+  .nav-pills .pill-solid{display:none}
+  .theme-wrap{display:block}
+  .nav-pills .theme-wrap .pill{display:inline-block;padding:8px 12px}
   .menu-btn{display:block}
   .brand-sub{display:none}
+  .sysbar-inner{padding:8px 14px;font-size:9px}
   .hero-inner{padding-top:36px}
+  .mega{font-size:10.5vw;letter-spacing:-.04em}
+  .h-xl{font-size:9.5vw}
+  .h-lg{font-size:8.5vw}
+  .feat-left{padding:26px 20px}
+  .feat-left h2{font-size:9vw}
   .timeline{grid-template-columns:1fr}
+  .proj-totals{grid-template-columns:1fr}
+  .phase-row{flex-direction:column;gap:4px}
+  .sig-meta b{font-size:22px}
   .modal-card{inset:2vh 50%}
+  .modal-body{padding:20px 18px}
+  .modal-body h2{font-size:26px}
+  .modal-content{font-size:14.5px}
+  .modal-content pre{font-size:11px}
+  .admin-form .f2,.series-nav,.ai-box .f2{grid-template-columns:1fr}
+  .op-card{min-height:0;padding:18px}
+  .op-big{font-size:72px}
+  .profile-head{padding:18px}
+  .pf-card{padding:16px;min-height:0}
+  .foot-brand{font-size:22px}
+  .news-row{flex-direction:column}
+  .news-row button{width:100%}
   .sysbar-theme{display:none}
 }

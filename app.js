@@ -614,6 +614,7 @@ function openAdmin(tab) {
 function closeAdmin() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); overlay.hidden = true; }
 document.getElementById("adminBtn").addEventListener("click", () => openAdmin());
 document.getElementById("mobileAdmin").addEventListener("click", e => { e.preventDefault(); document.getElementById("mobileMenu").classList.remove("open"); openAdmin(); });
+document.getElementById("mobilePal").addEventListener("click", e => { e.preventDefault(); document.getElementById("mobileMenu").classList.remove("open"); palOpen(); });
 document.getElementById("editProfileBtn").addEventListener("click", () => openAdmin("about"));
 document.getElementById("adminClose").addEventListener("click", closeAdmin);
 overlay.addEventListener("click", closeAdmin);
