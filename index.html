@@ -398,12 +398,6 @@
       <button data-tab="settings">SYNC</button>
     </div>
     <div class="admin-pane" data-pane="posts">
-      <div class="admin-form">
-        <h4>✨ AI DRAFT FROM IDEA</h4>
-        <input id="aiTopic" placeholder="TOPIC e.g. eBPF conntrack pressure under 10k rps" />
-        <div class="f2"><select id="aiTrack"></select><select id="aiDepth"><option value="standard">STANDARD ~700 WORDS</option><option value="quick">QUICK ~300 WORDS</option><option value="deep">DEEP DIVE ~1200 WORDS</option></select></div>
-        <button class="btn-ink" id="aiDraftBtn">✨ GENERATE DRAFT →</button>
-      </div>
       <button class="btn-ink" id="newPostBtn">＋ NEW LOG</button>
       <div id="adminPostList"></div>
       <form id="postForm" class="admin-form" hidden>
@@ -413,14 +407,12 @@
         <input id="pfExcerpt" placeholder="EXCERPT / SUBTITLE *" />
         <div class="f2"><input id="pfLevel" placeholder="LVL e.g. LVL-03" /><label class="chk"><input type="checkbox" id="pfHot" /> FEATURED</label></div>
         <div class="f2"><select id="pfStatus"><option value="published">PUBLISHED</option><option value="draft">DRAFT</option><option value="scheduled">SCHEDULED</option></select><input id="pfCover" placeholder="COVER IMAGE URL (optional)" /></div>
-        <button type="button" id="pfCoverBtn">🎨 GENERATE COVER →</button>
         <div class="f2"><input id="pfSeries" placeholder="SERIES e.g. inference-path" /><input id="pfPublishAt" type="datetime-local" title="Schedule: publish at this time" /></div>
         <div class="f2"><label class="chk">⇪ COVER FILE<input type="file" id="pfCoverFile" accept="image/*" hidden /></label><label class="chk"><input type="checkbox" id="pfMd" checked /> MARKDOWN MODE</label></div>
         <input id="pfTags" placeholder="TAGS comma-separated — INFERENCE, vLLM, GPU" />
         <textarea id="pfBody" rows="8" placeholder="BODY — Markdown (## heading, **bold**, ```code) or HTML"></textarea>
         <button type="button" id="pfPreviewBtn">👁 PREVIEW →</button>
         <div class="md-preview" id="pfPreview" hidden></div>
-        <button type="button" id="pfMetaBtn">✨ META (tags / excerpt / TL;DR) →</button>
         <div class="f2"><button type="submit" class="btn-ink">SAVE →</button><button type="button" id="postFormCancel">CANCEL</button></div>
       </form>
     </div>
@@ -470,7 +462,6 @@
         <h4>SUPABASE SYNC (Postgres backend)</h4>
         <input id="sbUrl" placeholder="SUPABASE_URL https://xyz.supabase.co" />
         <input id="sbKey" placeholder="SUPABASE_ANON_KEY" />
-        <input id="proxySecret" placeholder="PROXY SECRET (matches AI_SHARED_SECRET on server, optional)" />
         <div class="f2"><button type="submit" class="btn-ink">CONNECT →</button><button type="button" id="sbDisconnect">DISCONNECT</button></div>
         <p class="sb-note">Run this SQL once in Supabase → SQL Editor. Then every CRUD in this panel writes to Postgres <i>and</i> local cache.</p>
         <pre class="sb-sql">create table if not exists posts (id text primary key, num text, cat text, cat_label text, title text, excerpt text, read text, date text, level text, hot boolean, tags text[], body text, status text default 'published', cover text default '', series text default '', publish_at text default '', format text default 'html', raw text default '');
@@ -560,22 +551,6 @@ create policy "open" on storage.objects for all using (bucket_id = 'media') with
       <div class="resume-preview" id="resPreview"></div>
       <div class="f2"><button class="btn-ink" id="resDownload">⇩ DOWNLOAD .HTML</button><button class="btn-ink" id="resPrint">🖨 PRINT / PDF</button></div>
       <p class="sb-note">ATS rules enforced: single column, no tables/graphics, standard headings, keyword-matched skills, measurable bullets. Replace placeholder experience in ADMIN → ABOUT with your real history.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═════════ SOCIAL KIT MODAL ═════════ -->
-<div class="palette" id="socialModal" aria-hidden="true">
-  <div class="modal-backdrop" data-soc-close></div>
-  <div class="pal-card">
-    <div class="resume-head"><b>⇄ SOCIAL KIT</b><button id="socialClose" aria-label="Close">✕</button></div>
-    <div class="resume-body">
-      <label class="r-label">X THREAD (numbered, post-ready)</label>
-      <textarea id="socThread" rows="8" readonly></textarea>
-      <div class="m-add-row"><button id="socCopyX">COPY X →</button></div>
-      <label class="r-label">LINKEDIN POST</label>
-      <textarea id="socLi" rows="8" readonly></textarea>
-      <div class="m-add-row"><button id="socCopyLi">COPY LINKEDIN →</button><button id="socDl">⇩ DOWNLOAD .TXT</button></div>
     </div>
   </div>
 </div>

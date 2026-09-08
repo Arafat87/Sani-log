@@ -227,8 +227,6 @@ function sbInit() {
   } else { sb = null; if (sbStatusEl()) sbStatusEl().textContent = "● LOCAL MODE"; }
   const u = document.getElementById("sbUrl"), k = document.getElementById("sbKey");
   if (u) u.value = store.get("sani_sb_url", ""); if (k) k.value = store.get("sani_sb_key", "");
-  const ps = document.getElementById("proxySecret");
-  if (ps) ps.value = store.get("sani_proxy_secret", "");
   const ar = document.getElementById("sbAuthRow");
   if (ar) ar.hidden = !sb;
   paintAuth();
@@ -305,8 +303,6 @@ function renderFilters() {
     tags.map(t => `<button class="f-pill ${activeFilter === t.id ? "active" : ""}" data-filter="${t.id}">${t.label} <span class="cnt">[${countFor(t.id)}]</span><span class="del" data-del="${t.id}" title="Delete tag">×</span></button>`).join("");
   const sel = document.getElementById("pfCat");
   if (sel) sel.innerHTML = visibleTags().map(t => `<option value="${t.id}">${t.label}</option>`).join("");
-  const at = document.getElementById("aiTrack");
-  if (at) { const cur = at.value; at.innerHTML = visibleTags().map(t => `<option value="${t.id}">${t.label}</option>`).join(""); if (cur) at.value = cur; }
 }
 document.getElementById("filterRow").addEventListener("click", e => {
   const del = e.target.closest("[data-del]");
@@ -598,7 +594,7 @@ function openPost(id) {
 }
 function closePost() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; currentPost = null; document.title = "SANI.LOG — Infrastructure Intelligence Hub"; try { history.replaceState(null, "", location.pathname); } catch {} }
 modal.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closePost));
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closePost(); closeAdmin(); palClose(); resClose(); socClose(); document.getElementById("themePanel").classList.remove("open"); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closePost(); closeAdmin(); palClose(); resClose(); document.getElementById("themePanel").classList.remove("open"); } });
 mBody.addEventListener("scroll", () => {
   const max = mBody.scrollHeight - mBody.clientHeight;
   document.getElementById("mProgress").style.width = (max > 0 ? (mBody.scrollTop / max) * 100 : 0) + "%";
@@ -697,7 +693,7 @@ const tfTitle = document.getElementById("tfTitle"), tfDesc = document.getElement
 function renderAdminLists() {
   document.getElementById("adminPostList").innerHTML = POSTS.map(p => `
     <div class="admin-item"><div><b>LOG-${p.num} — ${p.title}${(p.status || "published") === "draft" ? `<span class="draft-pill">DRAFT</span>` : ""}</b><small>${p.catLabel} · ${getPostTags(p).join(", ")}</small></div>
-    <div class="row"><button data-soc="${p.id}">SOCIAL</button><button data-ep="${p.id}">EDIT</button><button data-dp="${p.id}">DEL</button></div></div>`).join("");
+    <div class="row"><button data-ep="${p.id}">EDIT</button><button data-dp="${p.id}">DEL</button></div></div>`).join("");
   document.getElementById("adminProjList").innerHTML = PROJECTS.map(p => `
     <div class="admin-item"><div><b>${p.n} — ${p.name}</b><small>${p.tag}</small></div>
     <div class="row"><button data-ej="${p.id}">EDIT</button><button data-dj="${p.id}">DEL</button></div></div>`).join("");
@@ -707,8 +703,6 @@ function renderAdminLists() {
 }
 document.getElementById("adminBody").addEventListener("click", e => {
   const ep = e.target.closest("[data-ep]"), dp = e.target.closest("[data-dp]");
-  const so = e.target.closest("[data-soc]");
-  if (so) { openSocial(so.dataset.soc); return; }
   const ej = e.target.closest("[data-ej]"), dj = e.target.closest("[data-dj]");
   const et = e.target.closest("[data-et]"), dt = e.target.closest("[data-dt]");
   if (ep) {
@@ -769,70 +763,6 @@ postForm.addEventListener("submit", e => {
     persistLocal(); saveWithToast(sbPush("posts", postToRow(p)));
   }
   postForm.hidden = true; editingPost = null; renderAll(); renderAdminLists();
-});
-/* ═════════ AI GENERATION: drafts, metadata, covers, social ═════════ */
-document.getElementById("aiDraftBtn").addEventListener("click", async () => {
-  const topic = document.getElementById("aiTopic").value.trim();
-  if (!topic) return alert("Enter a topic first.");
-  const track = document.getElementById("aiTrack").value || "infra";
-  const depth = document.getElementById("aiDepth").value || "standard";
-  const words = depth === "quick" ? "~300 words" : depth === "deep" ? "~1200 words" : "~700 words";
-  const btn = document.getElementById("aiDraftBtn"); btn.textContent = "✨ DRAFTING…";
-  try {
-    const raw = await callAI({ messages: [
-        { role: "system", content: "You write field-note drafts for an infrastructure engineering blog. Voice: practical, metric-rich, zero hype. Reply ONLY valid JSON: {\"title\":string, \"excerpt\":string (1-2 lines), \"tags\":[3-5 UPPERCASE tags], \"level\":\"LVL-02\"|\"LVL-03\"|\"LVL-04\", \"body\": markdown string with ## sections, fenced code blocks and > key takeaways}. No code fences around the JSON." },
-        { role: "user", content: `TRACK: ${tagLabelOf(track)}\nLENGTH: ${words}\nTOPIC: ${topic}` }
-      ],
-      model: document.getElementById("aiModel").value.trim() || "gpt-4o-mini", json: true,
-      key: aiSavedKey(), base: aiSavedBase() });
-    const d = JSON.parse(raw);
-    editingPost = null; document.getElementById("postFormTitle").textContent = "NEW LOG (AI DRAFT — REVIEW!)";
-    postForm.reset(); pfMd.checked = true; pfStatus.value = "draft";
-    pfTitle.value = d.title || topic; pfCat.value = track;
-    pfExcerpt.value = d.excerpt || ""; pfLevel.value = d.level || "LVL-03";
-    pfTags.value = (d.tags || []).join(", "); pfBody.value = d.body || "";
-    document.getElementById("pfPreview").hidden = true;
-    postForm.hidden = false;
-    toast("✨ DRAFT READY — review, then SAVE", true);
-    postForm.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  } catch (e) { alert("Draft failed: " + (e.message || e)); }
-  btn.textContent = "✨ GENERATE DRAFT →";
-});
-document.getElementById("pfMetaBtn").addEventListener("click", async () => {
-  const title = pfTitle.value.trim(), bodyRaw = pfBody.value.trim();
-  if (!title || !bodyRaw) return alert("Need a title and body first.");
-  const btn = document.getElementById("pfMetaBtn"); btn.textContent = "✨ META…";
-  try {
-    const raw = await callAI({ messages: [
-        { role: "system", content: "You write blog metadata. Reply ONLY valid JSON: {\"excerpt\":string (1-2 lines, no hype), \"tags\":[5 UPPERCASE tags], \"tldr\":[3-4 short takeaway strings]}." },
-        { role: "user", content: `TITLE: ${title}\n\nBODY:\n${bodyRaw.slice(0, 6000)}` }
-      ],
-      model: document.getElementById("aiModel").value.trim() || "gpt-4o-mini", json: true,
-      key: aiSavedKey(), base: aiSavedBase() });
-    const m = JSON.parse(raw);
-    if (m.excerpt) pfExcerpt.value = m.excerpt;
-    if (Array.isArray(m.tags)) pfTags.value = m.tags.join(", ");
-    if (Array.isArray(m.tldr) && m.tldr.length) {
-      const block = pfMd.checked
-        ? `> **TL;DR**\n${m.tldr.map(t => `> - ${t}`).join("\n")}\n\n`
-        : `<blockquote><strong>TL;DR</strong><ul>${m.tldr.map(t => `<li>${escHtml(t)}</li>`).join("")}</ul></blockquote>`;
-      pfBody.value = block + pfBody.value;
-    }
-    if (!pfRead.value.trim()) pfRead.value = estRead(pfMd.checked ? mdToHtml(pfBody.value) : pfBody.value);
-    toast("✨ META APPLIED — review excerpt, tags, TL;DR", true);
-  } catch (e) { alert("Meta failed: " + (e.message || e)); }
-  btn.textContent = "✨ META (tags / excerpt / TL;DR) →";
-});
-document.getElementById("pfCoverBtn").addEventListener("click", async () => {
-  const btn = document.getElementById("pfCoverBtn"); btn.textContent = "🎨 WORKING… (up to ~60s)";
-  try {
-    const prompt = `Flat vector illustration, mission-control telemetry aesthetic, burnt orange (#E54E23), sage green (#C5D1B5) and near-black ink (#181C19), geometric grids, status panels and signal motifs evoking: ${pfTitle.value.trim() || "infrastructure"} — ${pfExcerpt.value.trim()}. Abstract, no text, no letters, no watermark, 16:9 composition.`;
-    const b64 = await callImage({ prompt, key: aiSavedKey(), base: aiSavedBase() });
-    const blob = await (await fetch("data:image/png;base64," + b64)).blob();
-    pfCover.value = (await sbUpload(new File([blob], "cover.png", { type: "image/png" }), "covers")) || ("data:image/png;base64," + b64);
-    toast("🎨 COVER READY — review the URL, then SAVE", true);
-  } catch (e) { alert("Cover failed: " + (e.message || e)); }
-  btn.textContent = "🎨 GENERATE COVER →";
 });
 document.getElementById("newProjBtn").addEventListener("click", () => { editingProj = null; projForm.reset(); projForm.hidden = false; });
 document.getElementById("projFormCancel").addEventListener("click", () => { projForm.hidden = true; editingProj = null; });
@@ -922,7 +852,6 @@ document.getElementById("sbForm").addEventListener("submit", e => {
   e.preventDefault();
   store.set("sani_sb_url", document.getElementById("sbUrl").value.trim());
   store.set("sani_sb_key", document.getElementById("sbKey").value.trim());
-  store.set("sani_proxy_secret", document.getElementById("proxySecret").value.trim());
   sbInit(); alert("Supabase config saved — syncing.");
 });
 document.getElementById("sbDisconnect").addEventListener("click", () => {
@@ -1087,67 +1016,26 @@ document.getElementById("resPrint").addEventListener("click", () => {
 document.getElementById("aiUse").addEventListener("change", e => {
   document.getElementById("aiFields").hidden = !e.target.checked;
 });
-/* ═════════ AI CLIENT (server proxy first, pasted-key direct fallback) ═════════ */
-async function callAI({ messages, model, json = true, key = "", base = "" }) {
-  const secret = store.get("sani_proxy_secret", "");
-  try {
-    const r = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ kind: "chat", messages, model: model || "gpt-4o-mini", json, key, secret }) });
-    const j = await r.json().catch(() => ({}));
-    if (j && j.ok) return j.data;
-    if (j && j.error && j.error !== "NO_KEY" && !/fetch|network|failed/i.test(j.error)) throw new Error(j.error);
-  } catch (e) {
-    if (e && e.message && !/fetch|network|failed|NO_KEY/i.test(e.message)) throw e;
-  }
-  const k = (key || "").trim();
-  if (!k) throw new Error("AI unavailable — paste a key or set OPENAI_API_KEY on the server.");
-  const b = (base || "https://api.openai.com/v1").replace(/\/+$/, "");
-  const payload = { model: model || "gpt-4o-mini", messages };
-  if (json) payload.response_format = { type: "json_object" };
-  const r2 = await fetch(b + "/chat/completions", { method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: "Bearer " + k }, body: JSON.stringify(payload) });
-  const j2 = await r2.json().catch(() => ({}));
-  if (!r2.ok) throw new Error((j2.error && j2.error.message) || ("HTTP " + r2.status));
-  return j2.choices[0].message.content;
-}
-async function callImage({ prompt, size = "1792x1024", key = "", base = "" }) {
-  const secret = store.get("sani_proxy_secret", "");
-  try {
-    const r = await fetch("/api/ai", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ kind: "image", prompt, size, key, secret }) });
-    const j = await r.json().catch(() => ({}));
-    if (j && j.ok) return j.data;
-    if (j && j.error && j.error !== "NO_KEY" && !/fetch|network|failed/i.test(j.error)) throw new Error(j.error);
-  } catch (e) {
-    if (e && e.message && !/fetch|network|failed|NO_KEY/i.test(e.message)) throw e;
-  }
-  const k = (key || "").trim();
-  if (!k) throw new Error("AI unavailable — paste a key or set OPENAI_API_KEY on the server.");
-  const b = (base || "https://api.openai.com/v1").replace(/\/+$/, "");
-  const r2 = await fetch(b + "/images/generations", { method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: "Bearer " + k },
-    body: JSON.stringify({ model: "dall-e-3", prompt, size, response_format: "b64_json" }) });
-  const j2 = await r2.json().catch(() => ({}));
-  if (!r2.ok || !j2.data || !j2.data[0]) throw new Error((j2.error && j2.error.message) || ("HTTP " + r2.status));
-  return j2.data[0].b64_json;
-}
-const aiSavedKey = () => document.getElementById("aiKey").value.trim() || store.get("sani_ai_key", "");
-const aiSavedBase = () => document.getElementById("aiBase").value.trim();
 document.getElementById("aiPolishBtn").addEventListener("click", async () => {
   const key = document.getElementById("aiKey").value.trim();
   const job = document.getElementById("aiJob").value.trim();
+  if (!key) return alert("Paste an API key first — it is stored only in this browser.");
   if (!job) return alert("Paste the job posting so the AI has something to match against.");
-  if (key) store.set("sani_ai_key", key);
+  store.set("sani_ai_key", key);
   const btn = document.getElementById("aiPolishBtn"); btn.textContent = "✨ WORKING…";
   try {
     resCollect();
-    const raw = await callAI({ messages: [
-        { role: "system", content: "You rewrite resumes for ATS systems. Reply ONLY valid JSON: {\"summary\": string, \"bullets\": [string x6-8]}. Bullets start with strong verbs, include metrics where plausible from context, keep each under 160 chars, plain text, no markdown." },
-        { role: "user", content: "JOB POSTING:\n" + job + "\n\nCURRENT SUMMARY:\n" + resDraft.summary + "\n\nCURRENT BULLETS:\n" + resDraft.bullets.filter(b => b.on).map(b => b.t).join("\n") }
-      ],
-      model: document.getElementById("aiModel").value.trim() || "gpt-4o-mini",
-      json: true, key, base: document.getElementById("aiBase").value.trim() });
-    const out = JSON.parse(raw);
+    const base = (document.getElementById("aiBase").value.trim() || "https://api.openai.com/v1").replace(/\/+$/, "");
+    const r = await fetch(base + "/chat/completions", { method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+      body: JSON.stringify({ model: document.getElementById("aiModel").value.trim() || "gpt-4o-mini",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "You rewrite resumes for ATS parsing and recruiter skimming. Reply ONLY valid JSON: {\"summary\": string, \"bullets\": [6-8 strings]}. Bullets start with strong verbs, keep metrics from context, each under 160 chars, plain text, no markdown." },
+          { role: "user", content: "JOB POSTING:\n" + job + "\n\nCURRENT SUMMARY:\n" + resDraft.summary + "\n\nCURRENT BULLETS:\n" + resDraft.bullets.filter(b => b.on).map(b => b.t).join("\n") }
+        ] }) });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const out = JSON.parse((await r.json()).choices[0].message.content);
     if (out.summary) { resDraft.summary = out.summary; document.getElementById("resSummary").value = out.summary; }
     if (Array.isArray(out.bullets)) out.bullets.forEach(t => { if (t && !resDraft.bullets.some(b => b.t === t)) resDraft.bullets.push({ t: String(t), on: true, custom: true }); });
     resRenderLists(); renderResPreview();
@@ -1155,50 +1043,6 @@ document.getElementById("aiPolishBtn").addEventListener("click", async () => {
   } catch (err) { alert("AI polish failed: " + (err.message || err)); }
   btn.textContent = "✨ POLISH WITH AI →";
 });
-
-/* ═════════ SOCIAL KIT (X thread + LinkedIn from any log) ═════════ */
-let socialFor = null;
-function openSocial(id) {
-  const p = POSTS.find(x => x.id === id); if (!p) return; socialFor = id;
-  document.getElementById("socThread").value = "";
-  document.getElementById("socLi").value = "";
-  document.getElementById("socialModal").classList.add("open");
-  genSocial();
-}
-function socClose() { document.getElementById("socialModal").classList.remove("open"); socialFor = null; }
-async function genSocial() {
-  const p = POSTS.find(x => x.id === socialFor); if (!p) return;
-  document.getElementById("socThread").value = "✨ writing thread…";
-  document.getElementById("socLi").value = "✨ writing post…";
-  try {
-    const raw = await callAI({ messages: [
-        { role: "system", content: "You repurpose engineering blogs into social posts. Reply ONLY valid JSON: {\"thread\": string with 6-9 numbered posts, each under 260 chars, separated by newlines, \"linkedin\": string with a hook, 3 bullets, a CTA and 3 hashtags}." },
-        { role: "user", content: `TITLE: ${p.title}\nEXCERPT: ${p.excerpt}\nTAGS: ${getPostTags(p).join(", ")}\n\nBODY:\n${stripHtml(p.body).slice(0, 5000)}` }
-      ],
-      model: document.getElementById("aiModel").value.trim() || "gpt-4o-mini", json: true,
-      key: aiSavedKey(), base: aiSavedBase() });
-    const s = JSON.parse(raw);
-    document.getElementById("socThread").value = s.thread || "";
-    document.getElementById("socLi").value = s.linkedin || "";
-  } catch (e) {
-    document.getElementById("socThread").value = document.getElementById("socLi").value = "Failed: " + (e.message || e);
-  }
-}
-function copySoc(id) {
-  const el = document.getElementById(id);
-  const done = () => toast("✓ COPIED — paste away", true);
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(el.value).then(done).catch(() => { el.select(); document.execCommand("copy"); done(); });
-  else { el.select(); document.execCommand("copy"); done(); }
-}
-document.getElementById("socCopyX").addEventListener("click", () => copySoc("socThread"));
-document.getElementById("socCopyLi").addEventListener("click", () => copySoc("socLi"));
-document.getElementById("socDl").addEventListener("click", () => {
-  const p = POSTS.find(x => x.id === socialFor);
-  downloadFile(`social-${p ? p.id : "kit"}.txt`,
-    `X THREAD\n========\n${document.getElementById("socThread").value}\n\nLINKEDIN\n========\n${document.getElementById("socLi").value}`, "text/plain");
-});
-document.getElementById("socialClose").addEventListener("click", socClose);
-document.querySelector('#socialModal [data-soc-close]').addEventListener("click", socClose);
 
 /* ═════════ COMMAND PALETTE (CTRL+K) ═════════ */
 const pal = document.getElementById("palette"), palInput = document.getElementById("palInput"), palList = document.getElementById("palList");
