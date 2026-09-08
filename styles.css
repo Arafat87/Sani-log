@@ -1,4 +1,4 @@
-/* ═════════ BASE TOKENS (D350 Sage default) ═════════ */
+/* ═════════ BASE TOKENS (Sage Base default) ═════════ */
 :root{
   --sage:#C5D1B5;
   --sage-2:#D3DCC4;
@@ -19,9 +19,9 @@
   --disp:'Inter Tight','Archivo',system-ui,sans-serif;
   --body:'Space Grotesk',system-ui,sans-serif;
 }
-/* ═════════ CARGO PALETTE THEMES ═════════
-   KAIRO #E54E23 / DUNE #403D38 / ALMOND #CDC5BA / SANDSTONE #736A65
-   + Sage, Hyperlime, Aerospace Blue, ARC Yellow */
+/* ═════════ INDUSTRIAL THEME PALETTES ═════════
+   Ember #E54E23 / Umber #403D38 / Bone #CDC5BA / Sandstone #736A65
+   + Sage, Hyperlime, Signal Blue, Beacon Yellow */
 [data-theme="sage"]{
   --sage:#C5D1B5; --sage-2:#D3DCC4; --sage-3:#B7C5A6;
   --ink:#181C19; --ink-2:#222722; --ink-3:#2E342C;

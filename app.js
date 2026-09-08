@@ -1,11 +1,11 @@
-/* ═════════ THEMES — full cargo palette ═════════ */
+/* ═════════ THEMES — original industrial palettes ═════════ */
 const THEMES = [
-  { id: "sage",      name: "D350 Sage",      hex: "KAIRO #E54E23", sw: ["#C5D1B5", "#181C19", "#E54E23"] },
-  { id: "hyperlime", name: "TRA Hyperlime",  hex: "LIME #D9FF3D",  sw: ["#D9FF3D", "#141711", "#E54E23"] },
-  { id: "dune",      name: "NCX Dune",       hex: "DUNE #403D38",  sw: ["#403D38", "#EDE6D6", "#E54E23"] },
-  { id: "almond",    name: "Almond Day",     hex: "ALMOND #CDC5BA",sw: ["#CDC5BA", "#2B2724", "#E54E23"] },
-  { id: "aerospace", name: "Aerospace Blue", hex: "BLUE #1F27FF",  sw: ["#1F27FF", "#F0F1FF", "#FF5A26"] },
-  { id: "arc",       name: "ARC Signal",     hex: "ARC #FFD21F",   sw: ["#FFD21F", "#161513", "#E54E23"] }
+  { id: "sage",      name: "Sage Base",    hex: "EMBER #E54E23", sw: ["#C5D1B5", "#181C19", "#E54E23"] },
+  { id: "hyperlime", name: "Hyperlime",    hex: "VOLT #D9FF3D",  sw: ["#D9FF3D", "#141711", "#E54E23"] },
+  { id: "dune",      name: "Foundry",      hex: "UMBER #403D38", sw: ["#403D38", "#EDE6D6", "#E54E23"] },
+  { id: "almond",    name: "Parchment",    hex: "BONE #CDC5BA",  sw: ["#CDC5BA", "#2B2724", "#E54E23"] },
+  { id: "aerospace", name: "Signal Blue",  hex: "ION #1F27FF",   sw: ["#1F27FF", "#F0F1FF", "#FF5A26"] },
+  { id: "arc",       name: "Beacon",       hex: "SIGNAL #FFD21F", sw: ["#FFD21F", "#161513", "#E54E23"] }
 ];
 const BASE_TAGS = [
   { id: "ai-infra",  label: "AI INFRA" }, { id: "cloud", label: "CLOUD" },
